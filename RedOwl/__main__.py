@@ -21,10 +21,8 @@ def main():
 	general_group = parser.add_argument_group('General')
 	general_group.add('-h', '--help', action='help',
 		help='show this help message and exit')
-
-	#Read config file
-	configurationReader = ConfigurationReader('redowl.conf')
-	messaging.client.send_alert('Test message', configurationReader._conversation_id, configurationReader._refresh_token_path)
+	
+	messaging.client.send_alert('Test message')
 	
 	#message_service.connect_to_hangouts()
 	print("RedOwl closing....")
