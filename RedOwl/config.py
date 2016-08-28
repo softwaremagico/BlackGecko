@@ -16,7 +16,7 @@ class ConfigurationReader():
 		self._config.read(file)
 		
 		#Read Server parameters
-		server_conf = self._config['server']
-		self._auth_token = server_conf['refresh_token']
+		server_conf = self._config['authentication']
 		self._conversation_id = server_conf['conversation_id']
+		self._refresh_token_path = server_conf['refresh_token_path']
 		

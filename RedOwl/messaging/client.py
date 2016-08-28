@@ -9,11 +9,9 @@ def connect_to_hangouts(self, refresh_token_path):
 	except hangups.GoogleAuthError as e:
 		sys.exit('Login failed ({})'.format(e))
 
-def send_alert(message, auth_token, conversation_id):
+def send_alert(message, conversation_id, refresh_token_path):
 	# Obtain hangups authentication cookies.
-	# cookies = authentication.get_auth(auth_token)
-	cookies = hangups.auth.get_auth_stdin("/home/jorge/workspace/RedOwl/refresh_token.txt")
-	print("Cookies: ", cookies)
+	cookies = authentication.get_auth(refresh_token_path)
 
 	# Instantiate hangups Client instance.
 	client = hangups.Client(cookies)
