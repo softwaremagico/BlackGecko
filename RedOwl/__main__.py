@@ -1,8 +1,8 @@
 import os
 import appdirs
 import configargparse
-import messaging.service as message_service
 from config import ConfigurationReader
+import messaging.client as message_service
 
 def main():
 	"""Main entry point."""
@@ -24,7 +24,9 @@ def main():
 
 	#Read config file
 	configurationReader = ConfigurationReader('redowl.conf')
-	
+	print("Auth:", configurationReader._auth_token)
+	print("Conv:", configurationReader._conversation_id)
+	message_service.send_alert('Test message', configurationReader._auth_token, configurationReader._conversation_id)
 	
 	#message_service.connect_to_hangouts()
 	print("RedOwl closing....")
