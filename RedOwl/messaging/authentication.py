@@ -6,7 +6,7 @@ def get_auth(refresh_token):
 
 def store_refresh_token(refresh_token_filename, refresh_token):
 	ConfigurationReader._refresh_token = refresh_token
-	ConfigurationReader.write('redowl.conf')
+	ConfigurationReader.write_user_folder()
 	
 def load_refresh_token(refresh_token_filename):
 	return ConfigurationReader._refresh_token
