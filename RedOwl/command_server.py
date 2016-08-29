@@ -1,11 +1,22 @@
 import asyncio
 import sys
+import datetime
 import hangups
 import messaging.authentication as authentication
 from config import ConfigurationReader
 
+epoch = datetime.datetime.utcfromtimestamp(0)
+
+def unix_time_micros(dt):
+	return (dt - epoch).total_seconds() * 1000000.0
+
+
+
 class CommandServer():
-	_last_text_message = None
+	#Avoid TypeError: can't compare offset-naive and offset-aware datetimes
+	_last_text_timestamp = hangups.parsers.from_timestamp(int(unix_time_micros(datetime.datetime.utcnow())))
+	connected = False
+	
 	
 	def __init__(self):
 		self._connect()
@@ -38,6 +49,7 @@ class CommandServer():
 	@asyncio.coroutine	
 	def _connected(self):
 		print("Server connected:")
+		self.connected = True
 		yield from self._get_conversation()		
 		
 
@@ -48,19 +60,13 @@ class CommandServer():
 	
 	@asyncio.coroutine	
 	def _state_updated(self):
-		print("Something is happening!")
-		try:
-			conv_events = yield from self._conversation.get_events(None, 1)
-		except (IndexError, hangups.NetworkError):
-			conv_events = []
-		#Search for ChatMessageEvent
-		for event in conv_events:
-			if isinstance(event, hangups.conversation_event.ChatMessageEvent):
-				print("Text received: ", event.text)
+		"""Launched each time the user do anything in the conversation, such us pressing a key, entering into the conversation, etc."""
+		#print("--> State updated!")
+		yield from self._get_text_message()
 	
 		
 	def _get_conversation(self):
-		print("\tRetrieving conversation")
+		print("\t- Retrieving conversation")
 		#Get users and conversations
 		self._user_list, self._conv_list = (
 			yield from hangups.build_user_conversation_list(self._client)
@@ -69,12 +75,31 @@ class CommandServer():
 		self._conversation = self._conv_list.get(ConfigurationReader._conversation_id)
 		if (self._conversation == None):
 			sys.exit("Conversation with id '", ConfigurationReader._conversation_id ,"' not found")
-		print("\tConversation found!")
+		print("\t- Conversation found!")
 		self._conversation.on_event.add_observer(self._conversation_event_launched)
 		
 		
 	def _conversation_event_launched(self, conv_event):
-		print("--> Event on conversation!")
+		"""Only launched if the conversation is opened in the other client side when the server is already running"""
+		#print("--> Event on conversation!")
+		#yield from self._get_text_message()
 		
+		
+	def _get_text_message(self):
+		if (self.connected):
+			try:
+				conv_events = yield from self._conversation.get_events(None, 1)
+			except (IndexError, hangups.NetworkError):
+				conv_events = []
+			#Search for ChatMessageEvent
+			for event in conv_events:
+				if isinstance(event, hangups.conversation_event.ChatMessageEvent):
+					if (event.timestamp > self._last_text_timestamp):
+						self._last_text_timestamp = event.timestamp
+						self._text_received(event.text)
+						
+	
+	def _text_received(self, text):
+		print("Text received: ", text)
 	
 CommandServer()
