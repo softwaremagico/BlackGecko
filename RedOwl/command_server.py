@@ -5,6 +5,7 @@ import messaging.authentication as authentication
 from config import ConfigurationReader
 
 class CommandServer():
+	_last_text_message = None
 	
 	def __init__(self):
 		self._connect()
@@ -49,12 +50,13 @@ class CommandServer():
 	def _state_updated(self):
 		print("Something is happening!")
 		try:
-			conv_events = yield from self._conversation.get_events(None, 5)
+			conv_events = yield from self._conversation.get_events(None, 1)
 		except (IndexError, hangups.NetworkError):
 			conv_events = []
-		print("Event list: ", conv_events)
+		#Search for ChatMessageEvent
 		for event in conv_events:
-			print("Event: ", event)
+			if isinstance(event, hangups.conversation_event.ChatMessageEvent):
+				print("Text received: ", event.text)
 	
 		
 	def _get_conversation(self):
@@ -68,32 +70,11 @@ class CommandServer():
 		if (self._conversation == None):
 			sys.exit("Conversation with id '", ConfigurationReader._conversation_id ,"' not found")
 		print("\tConversation found!")
-		#self._conversation.on_event.add_observer(self._conversation_changed())
+		self._conversation.on_event.add_observer(self._conversation_event_launched)
 		
 		
-	def _conversation_changed(self):
+	def _conversation_event_launched(self, conv_event):
 		print("--> Event on conversation!")
-	
 		
-	@asyncio.coroutine
-	def _load(self):
-		"""Load more events for this conversation."""
-		# Don't try to load while we're already loading.
-		if not self._is_loading:
-			self._is_loading = True
-			try:
-				conv_events = yield from self._conversation.get_events(
-					self._conversation.events[0].id_
-				)
-			except (IndexError, hangups.NetworkError):
-				conv_events = []
-			if len(conv_events) == 0:
-				self._first_loaded = True
-			
-			print("Event list: ", conv_events)
-			for event in conv_events:
-				print("Event: ", event)
-				
-			self._is_loading = False
 	
 CommandServer()
