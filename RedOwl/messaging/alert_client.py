@@ -13,13 +13,11 @@ def connect_to_hangouts(self):
 def send_alert(message):
 	# Obtain hangups authentication cookies.
 	cookies = authentication.get_auth(ConfigurationReader._refresh_token)
-	#cookies = hangups.auth.get_auth_stdin("./refresh_token.txt")
 
 	# Instantiate hangups Client instance.
 	client = hangups.Client(cookies)
 
-	# Add an observer to the on_connect event to run the send_message coroutine
-	# when hangups has finished connecting.
+	# Add an observer to the on_connect event to run the send_message  when hangups has finished connecting.
 	client.on_connect.add_observer(lambda: asyncio.async(send_message(client, message)))
 
 	# Start an asyncio event loop by running Client.connect. This will not
@@ -30,7 +28,7 @@ def send_alert(message):
 
 @asyncio.coroutine
 def send_message(client, message):
-	"""Send message using connected hangups.Client instance."""
+	"""Send message using connected hangups. Client instance."""
 
 	# Instantiate a SendChatMessageRequest Protocol Buffer message describing the request.
 	request = hangups.hangouts_pb2.SendChatMessageRequest(
