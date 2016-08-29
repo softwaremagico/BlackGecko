@@ -58,7 +58,6 @@ class CommandServer():
 	@asyncio.coroutine	
 	def _state_updated(self):
 		"""Launched each time the user do anything in the conversation, such us pressing a key, entering into the conversation, etc."""
-		#print("--> State updated!")
 		yield from self._get_text_message()
 	
 		
@@ -105,7 +104,6 @@ class CommandServer():
 		
 	@asyncio.coroutine
 	def send_message(self, message):
-		print("##################################")
 		"""Send message using connected hangups. Client instance."""
 
 		# Instantiate a SendChatMessageRequest Protocol Buffer message describing the request.
