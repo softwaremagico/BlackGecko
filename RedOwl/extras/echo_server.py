@@ -12,7 +12,7 @@ def unix_time_micros(dt):
 
 
 
-class CommandServer():
+class EchoServer():
 	#Avoid TypeError: can't compare offset-naive and offset-aware datetimes
 	_last_text_timestamp = hangups.parsers.from_timestamp(int(unix_time_micros(datetime.datetime.utcnow())))
 	connected = False
@@ -124,6 +124,3 @@ class CommandServer():
 		# Make the request to the Hangouts API.
 		yield from self._client.send_chat_message(request)
 		
-		
-	
-CommandServer()
