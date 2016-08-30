@@ -167,7 +167,7 @@ class CommandServer():
 		if user.id_ not in self._node_enabled:
 			self._node_enabled.append(user.id_)
 			logging.info("Enabling node '" + self._alias + "'.")
-			SensorsController(self.motion_sensor, self.sound_sensor, self.sensor_started, self.sensor_error)
+			SensorsController(self.send_message)
 
 		
 	def show_help(self):
@@ -200,15 +200,3 @@ class CommandServer():
 		logging.debug("Status: " + status)
 		asyncio.async(self.send_message(status))
 		
-	
-	def motion_sensor(self):
-		asyncio.async(self.send_message("🚨 Motion detected in '" + self._alias + "'! 🚨"))
-
-	def sound_sensor(self):
-		asyncio.async(self.send_message("📢 Sound detected in '" + self.__alias + "'! 📢"))
-		
-	def sensor_started(self):
-		asyncio.async(self.send_message("Enabling node '" + self._alias + "'"))
-		
-	def sensor_error(self, message):
-		asyncio.async(self.send_message(message))
