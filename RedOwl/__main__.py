@@ -1,19 +1,24 @@
 import os
 import argparse
+import logging
+
 import messaging.alert_client
 from extras.echo_server import EchoServer
 from messaging.command_server import CommandServer
+from config import ConfigurationReader
 
 _echo_server = False
 _test_alert = False
 _command_server = False
+
+logging.basicConfig(filename=ConfigurationReader._log_file, level=logging.INFO)
 
 def main():
 	"""Main entry point."""
 	handle_arguments()
 	
 	
-	print("RedOwl starting....")
+	logging.info("RedOwl starting....")
 	
 	if (_echo_server):
 		EchoServer()
@@ -23,7 +28,7 @@ def main():
 		CommandServer()
 	
 	#message_service.connect_to_hangouts()
-	print("RedOwl closing....")
+	logging.info("RedOwl closing....")
 	
 def handle_arguments():
 	parser = argparse.ArgumentParser(description='An alarm system based on Hangouts.', epilog="Copyright© 2016 Jorge Hortelano")

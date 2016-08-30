@@ -2,6 +2,7 @@ import asyncio
 import sys
 import datetime
 import subprocess
+import logging
 
 import hangups
 import messaging.authentication as authentication
@@ -9,6 +10,7 @@ from config import ConfigurationReader
 from sensors.sensors import SensorsController
 
 epoch = datetime.datetime.utcfromtimestamp(0)
+logging.basicConfig(filename=ConfigurationReader._log_file, level=logging.INFO)
 
 def unix_time_micros(dt):
 	return (dt - epoch).total_seconds() * 1000000.0
@@ -31,7 +33,7 @@ class CommandServer():
 	
 	
 	def _connect(self):
-		print("Connecting...")
+		logging.info("Connecting...")
 		# Obtain hangups authentication cookies.
 		cookies = authentication.get_auth(ConfigurationReader._refresh_token)
 
@@ -49,7 +51,7 @@ class CommandServer():
 			loop.run_until_complete(self._client.connect())
 		except KeyboardInterrupt:
 			loop.stop()
-			print("\n"+ ConfigurationReader._alias +" down")
+			logging.info(ConfigurationReader._alias +" down")
 			sys.exit(0)
 	
 		
@@ -59,13 +61,13 @@ class CommandServer():
 
 	@asyncio.coroutine	
 	def _connected(self):
-		print("Server connected:")
+		logging.info("Server connected!")
 		yield from self._get_conversation()		
 		
 
 	@asyncio.coroutine	
 	def _disconnected(self):
-		print("Server disconnected!")
+		logging.info("Server disconnected!")
 	
 	
 	@asyncio.coroutine	
@@ -75,7 +77,7 @@ class CommandServer():
 	
 		
 	def _get_conversation(self):
-		print("\t- Retrieving conversation")
+		logging.debug("Retrieving conversation...")
 		#Get users and conversations
 		self._user_list, self._conv_list = (
 			yield from hangups.build_user_conversation_list(self._client)
@@ -84,14 +86,14 @@ class CommandServer():
 		self._conversation = self._conv_list.get(ConfigurationReader._conversation_id)
 		if (self._conversation == None):
 			sys.exit("Conversation with id '", ConfigurationReader._conversation_id ,"' not found")
-		print("\t- Conversation found!")
+		logging.debug("Conversation found!")
 		self.connected = True
 		self._conversation.on_event.add_observer(self._conversation_event_launched)
 		
 		
 	def _conversation_event_launched(self, conv_event):
 		"""Only launched if the conversation is opened in the other client side when the server is already running"""
-		#print("--> Event on conversation!")
+		logging.debug("Event on conversation!")
 		#yield from self._get_text_message()
 		
 		
@@ -112,12 +114,12 @@ class CommandServer():
 						
 	
 	def _text_received(self, event, user):
-		print("Text received: ", event.text)		
+		logging.info("Text received '" + event.text + "' from user '" + str(user.emails) + "'.")		
 		if "help" ==  event.text.lower():
 			self.show_help()
 		#Node list
 		elif "hello" ==  event.text.lower(): 
-			asyncio.async(self.send_message("Hello from '"+self._alias+"'!"))
+			asyncio.async(self.send_message("Hello from '" + self._alias+"'!"))
 		#Enable/Disable node if needed.
 		elif "unselect" in event.text.lower():
 			if self._alias.lower() in event.text.lower():
@@ -137,19 +139,19 @@ class CommandServer():
 			self.execute_command(command)
 		else:
 		# just print info
-			print("Invalid command '", event.text,"' from '", user.id_,"'.")
+			logging.warning("Invalid command '" + event.text +"' from '" + str(user.id_) +"'.")
 			asyncio.async(self.send_message("Invalid command '" + event.text + "'."))
 
 	
 	def _select_node(self, user):
-		print("Selecting node '", self._alias, "' for user '", user.emails,"'")
+		logging.info("Selecting node '" + self._alias + "' for user '" + str(user.emails) + "'")
 		self._user_selection.append(user.id_)
 		asyncio.async(self.send_message("Selecting node '" + self._alias +"'"))
 
 
 	def _unselect_node(self, user):
 		if (user.id_ in self._user_selection):
-			print("Unselecting node '", self._alias, "' for user '", user.emails,"'")
+			logging.info("Unselecting node '" + self._alias + "' for user '" + str(user.emails) + "'")
 			self._user_selection.remove(user.id_)
 			asyncio.async(self.send_message("Unselecting node '" + self._alias +"'"))
 	
@@ -157,17 +159,15 @@ class CommandServer():
 	def _disable_node(self, user):
 		if user.id_ in self._node_enabled: 
 			self._node_enabled.remove(user.id_)
-			print("Disabling node '", self._alias, "'")
+			logging.info("Disabling node '" + self._alias +  "'")
 			asyncio.async(self.send_message("Disabling node '" + self._alias + "'"))
 	
 			
 	def _enable_node(self, user):
-		print(user.id_)
 		if user.id_ not in self._node_enabled:
 			self._node_enabled.append(user.id_)
-			print("Enabling node: " + self._alias)
-			SensorsController(self.motion_sensor, self.sound_sensor)
-			asyncio.async(self.send_message("Enabling node '" + self._alias + "'"))			
+			logging.info("Enabling node '" + self._alias + "'.")
+			SensorsController(self.motion_sensor, self.sound_sensor, self.sensor_started, self.sensor_error)
 
 		
 	def show_help(self):
@@ -197,7 +197,7 @@ class CommandServer():
 	#Executes a command if the user is in the allowed_user list. 
 	def execute_command(self, command):	
 		status = subprocess.check_output(command)
-		print("Status: ", status)
+		logging.debug("Status: " + status)
 		asyncio.async(self.send_message(status))
 		
 	
@@ -207,3 +207,8 @@ class CommandServer():
 	def sound_sensor(self):
 		asyncio.async(self.send_message("📢 Sound detected in '" + self.__alias + "'! 📢"))
 		
+	def sensor_started(self):
+		asyncio.async(self.send_message("Enabling node '" + self._alias + "'"))
+		
+	def sensor_error(self, message):
+		asyncio.async(self.send_message(message))

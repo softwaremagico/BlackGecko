@@ -10,6 +10,7 @@ class ConfigurationReader():
 	_alias = ""
 	_infrared_sensor_pin = 0
 	_sound_sensor_pin = 0
+	_log_file = ""
 
 
 	def __init__(self):
@@ -32,6 +33,7 @@ class ConfigurationReader():
 		
 		server_conf = config['node']
 		ConfigurationReader._alias = server_conf['alias']
+		ConfigurationReader._log_file = server_conf['log_path']
 		
 		server_conf = config['sensors']
 		ConfigurationReader._infrared_sensor_pin = server_conf['infrared_pin']
