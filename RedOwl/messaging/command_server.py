@@ -114,47 +114,47 @@ class CommandServer():
 		#Enable/Disable node if needed.
 		elif "unselect" in event.text.lower():
 			if self._alias.lower() in event.text.lower():
-				self.unselect_node(user)
+				self._unselect_node(user)
 		elif "select" in event.text.lower():
 			if self._alias.lower() in event.text.lower():
-				self.select_node(user)
+				self._select_node(user)
 		elif "disable" ==  event.text.lower():
 			if user.id_ in self._user_selection :
-				self.disable_node(user)
+				self._disable_node(user)
 		elif "enable" ==  event.text.lower():
 			if user.id_ in self._user_selection:
-				self.enable_node(user)
+				self._enable_node(user)
 		# Execute command if possible.
 		elif event.text.lower() == "reboot":
 			command = ['sudo', 'reboot']
-			self.executeCommand(command)
+			self.execute_command(command)
 		else:
 		# just print info
 			print("Invalid command '", event.text,"' from '", user.id_,"'.")
 			asyncio.async(self.send_message("Invalid command '" + event.text + "'."))
 
 	
-	def select_node(self, user):
+	def _select_node(self, user):
 		print("Selecting node '", self._alias, "' for user '", user.emails,"'")
 		self._user_selection.append(user.id_)
 		asyncio.async(self.send_message("Selecting node '" + self._alias +"'"))
 
 
-	def unselect_node(self, user):
+	def _unselect_node(self, user):
 		if (user.id_ in self._user_selection):
 			print("Unselecting node '", self._alias, "' for user '", user.emails,"'")
 			self._user_selection.remove(user.id_)
 			asyncio.async(self.send_message("Unselecting node '" + self._alias +"'"))
 	
 	
-	def disable_node(self, user):
+	def _disable_node(self, user):
 		if user.id_ in self._node_enabled: 
 			self._node_enabled.remove(user.id_)
 			print("Disabling node '", self._alias, "'")
 			asyncio.async(self.send_message("Disabling node '" + self._alias + "'"))
 	
 			
-	def enable_node(self, user):
+	def _enable_node(self, user):
 		print(user.id_)
 		if user.id_ not in self._node_enabled:
 			self._node_enabled.append(user.id_)
@@ -187,7 +187,7 @@ class CommandServer():
 		
 	
 	#Executes a command if the user is in the allowed_user list. 
-	def executeCommand(self, command):	
+	def execute_command(self, command):	
 		status = subprocess.check_output(command)
 		print("Status: ", status)
 		asyncio.async(self.send_message(status))
