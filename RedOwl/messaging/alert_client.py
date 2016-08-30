@@ -46,6 +46,7 @@ def send_message(client, message):
 	
 	try:
 		# Make the request to the Hangouts API.
+		print("Sending message '", message, "'.")
 		yield from client.send_chat_message(request)
 	finally:
 		# Disconnect the hangups Client to make client.connect return.

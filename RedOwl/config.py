@@ -7,6 +7,7 @@ class ConfigurationReader():
 	_app_dirs = appdirs.AppDirs('RedOWl', 'softwaremagico')
 	_conversation_id = ""
 	_refresh_token = ""
+	_alias = ""
 
 
 	def __init__(self):
@@ -26,6 +27,9 @@ class ConfigurationReader():
 		server_conf = config['authentication']
 		ConfigurationReader._conversation_id = server_conf['conversation_id']
 		ConfigurationReader._refresh_token = server_conf['refresh_token']
+		
+		server_conf = config['node']
+		ConfigurationReader._alias = server_conf['alias']
 
 
 	def write_user_folder():

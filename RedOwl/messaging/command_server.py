@@ -1,6 +1,8 @@
 import asyncio
 import sys
 import datetime
+import subprocess
+
 import hangups
 import messaging.authentication as authentication
 from config import ConfigurationReader
@@ -11,14 +13,18 @@ def unix_time_micros(dt):
 	return (dt - epoch).total_seconds() * 1000000.0
 
 
-
 class CommandServer():
 	#Avoid TypeError: can't compare offset-naive and offset-aware datetimes
 	_last_text_timestamp = hangups.parsers.from_timestamp(int(unix_time_micros(datetime.datetime.utcnow())))
+	_alias = ""
+	_node_enabled = []
+	_user_selection = []
+
 	connected = False
 	
 	
 	def __init__(self):
+		self._alias = ConfigurationReader._alias
 		self._connect()
 	
 	
@@ -95,17 +101,74 @@ class CommandServer():
 					user = self._conversation.get_user(event.user_id)
 					if (event.timestamp > self._last_text_timestamp and not user.is_self):
 						self._last_text_timestamp = event.timestamp
-						self._text_received(event.text)
+						self._text_received(event, user)
 						
 	
-	def _text_received(self, text):
-		print("Text received: ", text)		
-		asyncio.async(self.send_message(text))
+	def _text_received(self, event, user):
+		print("Text received: ", event.text)		
+		if "help" ==  event.text.lower():
+			self.show_help()
+		#Node list
+		elif "hello" ==  event.text.lower(): 
+			asyncio.async(self.send_message("Hello from '"+self._alias+"'!"))
+		#Enable/Disable node if needed.
+		elif "unselect" in event.text.lower():
+			if self._alias.lower() in event.text.lower():
+				self.unselect_node(user)
+		elif "select" in event.text.lower():
+			if self._alias.lower() in event.text.lower():
+				self.select_node(user)
+		elif "disable" ==  event.text.lower():
+			if user.id_ in self._user_selection :
+				self.disable_node(user)
+		elif "enable" ==  event.text.lower():
+			if user.id_ in self._user_selection:
+				self.enable_node(user)
+		# Execute command if possible.
+		elif event.text.lower() == "reboot":
+			command = ['sudo', 'reboot']
+			self.executeCommand(command)
+		else:
+		# just print info
+			print("Invalid command '", event.text,"' from '", user.id_,"'.")
+			asyncio.async(self.send_message("Invalid command '" + event.text + "'."))
+
+	
+	def select_node(self, user):
+		print("Selecting node '", self._alias, "' for user '", user.emails,"'")
+		self._user_selection.append(user.id_)
+		asyncio.async(self.send_message("Selecting node '" + self._alias +"'"))
+
+
+	def unselect_node(self, user):
+		if (user.id_ in self._user_selection):
+			print("Unselecting node '", self._alias, "' for user '", user.emails,"'")
+			self._user_selection.remove(user.id_)
+			asyncio.async(self.send_message("Unselecting node '" + self._alias +"'"))
+	
+	
+	def disable_node(self, user):
+		if user.id_ in self._node_enabled: 
+			self._node_enabled.remove(user.id_)
+			print("Disabling node '", self._alias, "'")
+			asyncio.async(self.send_message("Disabling node '" + self._alias + "'"))
+	
+			
+	def enable_node(self, user):
+		print(user.id_)
+		if user.id_ not in self._node_enabled:
+			self._node_enabled.append(user.id_)
+			print("Enabling node: " + self._alias)
+			asyncio.async(self.send_message("Enabling node '" + self._alias + "'"))			
+
+		
+	def show_help(self):
+		asyncio.async(self.send_message("Available commands:\n\thello\n\tselect <alias>\n\tenable\n\tdisable"))
+		
 		
 	@asyncio.coroutine
 	def send_message(self, message):
 		"""Send message using connected hangups. Client instance."""
-
 		# Instantiate a SendChatMessageRequest Protocol Buffer message describing the request.
 		request = hangups.hangouts_pb2.SendChatMessageRequest(
 			request_header=self._client.get_request_header(),
@@ -122,6 +185,10 @@ class CommandServer():
 		# Make the request to the Hangouts API.
 		yield from self._client.send_chat_message(request)
 		
-		
 	
-CommandServer()
+	#Executes a command if the user is in the allowed_user list. 
+	def executeCommand(self, command):	
+		status = subprocess.check_output(command)
+		print("Status: ", status)
+		asyncio.async(self.send_message(status))
+		
