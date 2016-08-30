@@ -8,6 +8,8 @@ class ConfigurationReader():
 	_conversation_id = ""
 	_refresh_token = ""
 	_alias = ""
+	_infrared_sensor_pin = 0
+	_sound_sensor_pin = 0
 
 
 	def __init__(self):
@@ -30,6 +32,10 @@ class ConfigurationReader():
 		
 		server_conf = config['node']
 		ConfigurationReader._alias = server_conf['alias']
+		
+		server_conf = config['sensors']
+		ConfigurationReader._infrared_sensor_pin = server_conf['infrared_pin']
+		ConfigurationReader._sound_sensor_pin = server_conf['sound_pin']
 
 
 	def write_user_folder():

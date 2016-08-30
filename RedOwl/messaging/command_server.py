@@ -6,6 +6,7 @@ import subprocess
 import hangups
 import messaging.authentication as authentication
 from config import ConfigurationReader
+from sensors.sensors import SensorsController
 
 epoch = datetime.datetime.utcfromtimestamp(0)
 
@@ -19,6 +20,7 @@ class CommandServer():
 	_alias = ""
 	_node_enabled = []
 	_user_selection = []
+	_events_initialized = False
 
 	connected = False
 	
@@ -42,8 +44,13 @@ class CommandServer():
 		self._client.on_state_update.add_observer(lambda _: asyncio.async(self._state_updated()))
 		
 		# Start an asyncio event loop by running Client.connect. This will not return until Client.disconnect is called, or hangups becomes disconnected.
-		loop = asyncio.get_event_loop()
-		loop.run_until_complete(self._client.connect())
+		try:
+			loop = asyncio.get_event_loop()
+			loop.run_until_complete(self._client.connect())
+		except KeyboardInterrupt:
+			loop.stop()
+			print("\n"+ ConfigurationReader._alias +" down")
+			sys.exit(0)
 	
 		
 	def _disconnect(self):
@@ -159,6 +166,7 @@ class CommandServer():
 		if user.id_ not in self._node_enabled:
 			self._node_enabled.append(user.id_)
 			print("Enabling node: " + self._alias)
+			SensorsController(self.motion_sensor, self.sound_sensor)
 			asyncio.async(self.send_message("Enabling node '" + self._alias + "'"))			
 
 		
@@ -191,4 +199,11 @@ class CommandServer():
 		status = subprocess.check_output(command)
 		print("Status: ", status)
 		asyncio.async(self.send_message(status))
+		
+	
+	def motion_sensor(self):
+		asyncio.async(self.send_message("🚨 Motion detected in '" + self._alias + "'! 🚨"))
+
+	def sound_sensor(self):
+		asyncio.async(self.send_message("📢 Sound detected in '" + self.__alias + "'! 📢"))
 		
