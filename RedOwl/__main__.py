@@ -39,10 +39,10 @@ def handle_arguments():
 	
 	#Exclusive options (different executions available)
 	group = parser.add_mutually_exclusive_group()
-	group.add_argument('--echo-server', '-e', action='store_true', help='Enables echo server for testing communications.')
-	group.add_argument('--test-alert', '-t', action='store_true', help='Sends a simple predefined text message to the hangouts conversation.')
-	group.add_argument('--command-server', '-c', action='store_true', help='Starts a server that can execute commands for the OS.')
-	group.add_argument('--conversations-info', '-i', action='store_true', help='Shows all available conversations ids.')
+	group.add_argument('-e', '--echo-server', action='store_true', help='Enables echo server for testing communications.')
+	group.add_argument('-t', '--test-alert', action='store_true', help='Sends a simple predefined text message to the hangouts conversation.')
+	group.add_argument('-c', '--command-server', action='store_true', help='Starts a server that can execute commands for the OS.')
+	group.add_argument('-i', '--conversations-info', action='store_true', help='Shows all available conversations ids.')
 
 	args = parser.parse_args()
 	

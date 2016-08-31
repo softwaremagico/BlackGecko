@@ -16,8 +16,13 @@ class ConfigurationReader():
 	def __init__(self):
 		config_file = ConfigurationReader.get_config_file_path()
 		if (os.path.isfile(config_file)):
+			#User folder configuration file.
 			self.read(config_file)
+		elif(os.path.isfile("/etc/"+ConfigurationReader._config_file)):
+			#System configuration file.
+			self.read("/etc/"+ConfigurationReader._config_file)
 		else:
+			#Application configuration file.
 			self.read(ConfigurationReader._config_file)
 		
 
