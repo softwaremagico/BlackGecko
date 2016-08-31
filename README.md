@@ -1,9 +1,13 @@
 # Redowl
-Basic alarm system based in Python and a Raspberry Pi
+Basic alarm system based in Python and a Raspberry Pi. It has been developed as a continuation of the [Beholder](https://github.com/jorgehortelano/beholder) project, that uses Whatsapp instead of Google Hangouts.
 
-This project is based on the [hangups] (https://github.com/tdryer/hangups) API for Google Hangouts. A
+This project is based on the [hangups] (https://github.com/tdryer/hangups) API for Google Hangouts.
 
 This software has been developed using a Raspberry Pi 2 Model B with a LM393 Sound Detection Sensor Module and a Pyroelectric Infrared PIR Motion Sensor Detector Module HC-SR501. The operating system is an Ubuntu Mate 16.04.
+
+## Dependencies
+  1. Python 3.3+
+  2. Hangups api for python
 
 ## Installation
 
