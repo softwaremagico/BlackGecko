@@ -5,3 +5,10 @@
 /dist
 /*.egg-info
 redowl.conf
+/.pybuild
+debian/redowl
+debian/debhelper-build-stamp
+debian/redowl.debhelper.log
+debian/redowl.postinst.debhelper
+debian/redowl.prerm.debhelper
+debian/redowl.substvars
