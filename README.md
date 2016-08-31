@@ -1,3 +1,5 @@
+<img src="./images/redowl.png" width="128" alt="RedOwl" align="middle">
+
 # Redowl
 Basic alarm system based in Python and a Raspberry Pi. It has been developed as a continuation of the [Beholder](https://github.com/jorgehortelano/beholder) project, that uses Whatsapp instead of Google Hangouts.
 
