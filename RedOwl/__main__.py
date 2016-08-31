@@ -4,12 +4,14 @@ import logging
 
 import messaging.alert_client
 from extras.echo_server import EchoServer
+from extras.conversations_info import ConversationsInfo
 from messaging.command_server import CommandServer
 from config import ConfigurationReader
 
 _echo_server = False
 _test_alert = False
 _command_server = False
+_conversations_info = False
 
 logging.basicConfig(filename=ConfigurationReader._log_file, level=logging.INFO)
 
@@ -26,6 +28,8 @@ def main():
 		messaging.alert_client.send_alert('Test message')
 	elif(_command_server):
 		CommandServer()
+	elif(_conversations_info):
+		ConversationsInfo()
 	
 	#message_service.connect_to_hangouts()
 	logging.info("RedOwl closing....")
@@ -38,6 +42,7 @@ def handle_arguments():
 	group.add_argument('--echo-server', '-e', action='store_true', help='Enables echo server for testing communications.')
 	group.add_argument('--test-alert', '-t', action='store_true', help='Sends a simple predefined text message to the hangouts conversation.')
 	group.add_argument('--command-server', '-c', action='store_true', help='Starts a server that can execute commands for the OS.')
+	group.add_argument('--conversations-info', '-i', action='store_true', help='Shows all available conversations ids.')
 
 	args = parser.parse_args()
 	
@@ -53,6 +58,9 @@ def handle_arguments():
 		global _command_server
 		_command_server = True
 		
+	if(args.conversations_info):	
+		global _conversations_info
+		_conversations_info = True
 
 #Execute as standard main like C++
 if __name__ == '__main__':

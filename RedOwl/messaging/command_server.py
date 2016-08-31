@@ -56,7 +56,7 @@ class CommandServer():
 	
 		
 	def _disconnect(self):
-		self._client.disconnect()
+		yield from self._client.disconnect()
 
 
 	@asyncio.coroutine	
