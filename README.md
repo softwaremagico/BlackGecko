@@ -22,7 +22,32 @@ python setup.py install
 ```
 
 ## Config
+The basic configuration file is in `/etc/redowl.conf`. This configuration file will be copied to the user local configuration the first time the application is launched. If you want to have different users with different configuration, then edit `/home/<user>/.config/RedOWl/redowl.conf`.
 
+In both cases, the configuration file will have this fields:
+
+	[authentication]
+	conversation_id = XXXXXXXXXXXXXXXXXXXXXXXXX
+	refresh_token = XXXXXXXXXXXXXXXXXXXXXXXXX
+
+	[node]
+	alias = RaspCam
+	log_path = /tmp/RedOwl.log
+
+	[sensors]
+	infrared_pin = 0
+	sound_pin = 0
+
+The most important fields are the one in `[authenticaion]`:
+
+The refresh token is needed to use the API with Google. First time you run the application, hangups will show a link to obtain this refresh token. Perform all required tasks showed in the console. 
+	
+After obtaining the refresh token, the conversation id can be obtained if you run the application with:
+```
+redowl --conversations-info
+```
+
+This will show a list with all conversations id available. 
 
 ## Execution
 
