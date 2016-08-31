@@ -56,6 +56,7 @@ class CommandServer():
 	
 		
 	def _disconnect(self):
+		asyncio.async(self.send_message("Server '"+ self._alias+"' stopped."))
 		yield from self._client.disconnect()
 
 
@@ -63,7 +64,7 @@ class CommandServer():
 	def _connected(self):
 		logging.info("Server connected!")
 		yield from self._get_conversation()		
-		
+		asyncio.async(self.send_message("Server '"+ self._alias+"' started."))
 
 	@asyncio.coroutine	
 	def _disconnected(self):
