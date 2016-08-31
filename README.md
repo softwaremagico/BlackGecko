@@ -23,7 +23,7 @@ After installing hangups API. Install this application running inside the applic
 python setup.py install
 ```
 
-## Config
+## Configuration
 The basic configuration file is in `/etc/redowl.conf`. This configuration file will be copied to the user local configuration the first time the application is launched. If you want to have different users with different configuration, then edit `/home/<user>/.config/RedOWl/redowl.conf`.
 
 In both cases, the configuration file will have this fields:
