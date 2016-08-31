@@ -40,23 +40,34 @@ In both cases, the configuration file will have this fields:
 
 The most important fields are the one in `[authenticaion]`:
 
-The refresh token is needed to use the API with Google. First time you run the application, hangups will show a link to obtain this refresh token. Perform all required tasks showed in the console. 
+The refresh token is needed to use the API with Google. To obtain it, execute hangups one time:
+```
+hangups
+```
+
+It will show a link to ask for this refresh token. Perform all required tasks showed in the console. Execute it again to check that now hangups runs correctly and you can see the command-line client for hangouts. If it is not working, see the hangups [documentation](https://github.com/tdryer/hangups).
+
+It it is working, you can see a file called `refresh_token.txt` created by hangups. Copy the content into the `redowl.con` configuration file. 
 	
 After obtaining the refresh token, the conversation id can be obtained if you run the application with:
 ```
 redowl --conversations-info
 ```
 
-This will show a list with all conversations id available. 
+This will show a list with all conversations id available. Try one by one until you are connected to the correct conversation. For testing it, you can use:
+```
+redowl --test-alert
+```
+This command will send a 'Test message' text to the selected conversation. 
 
 ## Execution
 
-To launch the application execute:
+To launch the application as a server execute:
 
 	redowl -c
 	
 
-If everything is running, from your hangouts application, you can use the next messages as commands:
+If everything is running correctly, now you can use a standard hangouts client (i.e. in your mobile phone) to communicate with the application. You can use the next messages as commands:
 
 	hello			will show the name (alias) of the device.
 	select <alias>	select the device to accept other commands.
@@ -67,7 +78,5 @@ If everything is running, from your hangouts application, you can use the next m
 For using this application at least you need to select the node first, and then start the detection. 
 
 ## Multiuser
-
-Different users that are in `allowed_users` list can receive the alert messages. 
 
 Each time a user want to access to the alerts system, must "subscribe" to the node with the `enable` command. He will automatically receive any alerts that will be launched from the system. Also, if later the user executes the `disable` command, he will stop receiving any alert. But this command does not affect any other subscribed user that still will be suscribed to the alert system. 
