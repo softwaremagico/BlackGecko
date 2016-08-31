@@ -1,9 +1,9 @@
 <img src="./images/redowl.png" width="128" alt="RedOwl" align="middle">
 
 # Redowl
-Basic alarm system based in Python and a Raspberry Pi. It has been developed as a continuation of the [Beholder](https://github.com/jorgehortelano/beholder) project, that uses Whatsapp instead of Google Hangouts.
+Basic home intrussion detection system based in Hangouts and a Raspberry Pi. When an intrussion has been detected, it sends a hangouts message as an alarm. 
 
-This project is based on the [hangups] (https://github.com/tdryer/hangups) API for Google Hangouts.
+This project is based on the [hangups] (https://github.com/tdryer/hangups) API for Google Hangouts. It has been developed as a continuation of the [Beholder](https://github.com/jorgehortelano/beholder) project, that uses Whatsapp instead of Google Hangouts.
 
 This software has been developed using a Raspberry Pi 2 Model B with a LM393 Sound Detection Sensor Module and a Pyroelectric Infrared PIR Motion Sensor Detector Module HC-SR501. The operating system is an Ubuntu Mate 16.04.
 
