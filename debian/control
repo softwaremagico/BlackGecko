@@ -1,0 +1,15 @@
+Source: redowl
+Section: python
+Priority: optional
+Maintainer: Jorge Hortelano, <jorgehortelano@gmail.com>
+Build-Depends: debhelper (>= 7), python3
+X-Python-Version: >= 3.3
+
+Package: redowl
+Architecture: all
+Section: python
+Essential: no
+Replaces: redowl
+Provides: redowl
+Description: 
+	Python application for detecting intrussions. 
