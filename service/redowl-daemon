@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+
 ### BEGIN INIT INFO
 # Provides:          RedOwl
 # Required-Start:    $local_fs
@@ -31,7 +32,7 @@ start()
 	echo "Starting RedOwl sendor alert system..."
 	echo "--------------------------------------------"
 	mkdir -p ${PID_FOLDER} 2>/dev/null
-	${EXEC} run -c -f ${CONFIG_FILE}
+	${EXEC} -c -f ${CONFIG_FILE}
 	echo ""
 }
 
@@ -67,7 +68,7 @@ forceStop()
 }
 
       
-case $1 in  
+case "$1" in
    start)
 	start;
 	;;   

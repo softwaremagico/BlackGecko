@@ -1,2 +1,3 @@
 redowl usr/bin/
 redowl.conf  etc/
+service/redowl-daemon etc/init.d/

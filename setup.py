@@ -18,10 +18,11 @@ setup(
     name='RedOwl',
     version=__version__,
     url='https://github.com/jorgehortelano/RedOwl',
-	author='Jorge Hortelano',
+    author='Jorge Hortelano',
     author_email='softwaremagico@gmail.com',
     license='GNU GPL v3',
     tests_require=[],
+    #scripts = ['redowl-cli'],
     install_requires = deps,
     dependency_links = [
         'https://github.com/tdryer/hangups',
