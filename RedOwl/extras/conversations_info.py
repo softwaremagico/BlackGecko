@@ -1,6 +1,7 @@
 import asyncio
 import sys
 import datetime
+
 import hangups
 import messaging.authentication as authentication
 from config import ConfigurationReader
@@ -8,7 +9,6 @@ from config import ConfigurationReader
 
 
 class ConversationsInfo():
-
 	
 	def __init__(self):
 		self._connect()

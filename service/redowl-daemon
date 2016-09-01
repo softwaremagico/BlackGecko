@@ -1,0 +1,87 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          RedOwl
+# Required-Start:    $local_fs
+# Required-Stop:     $local_fs
+# Should-Start:      $network
+# Should-Stop:       $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: RedOwl Hangouts alert
+# Description: RedOwl Hangouts alert
+#
+### END INIT INFO
+
+######################################
+# CONFIGURATION
+######################################
+
+EXEC=/usr/bin/redowl
+CONFIG_FILE=/etc/redowl.conf
+PID_FOLDER=/var/run/redowl
+PID_FILE=redowl.pid
+WAIT_BEFORE_KILL=30
+
+######################################
+# START OF THE SCRIPT
+######################################
+
+start()
+{
+	echo "Starting RedOwl sendor alert system..."
+	echo "--------------------------------------------"
+	mkdir -p ${PID_FOLDER} 2>/dev/null
+	${EXEC} run -c -f ${CONFIG_FILE}
+	echo ""
+}
+
+stop()
+{
+	echo "Stopping RedOwl sendor alert system..."
+	echo "--------------------------------------------"
+	forceStop;
+	echo ""
+}
+
+forceStop() 
+{
+   SLEEP=$WAIT_BEFORE_KILL
+   if [ -r "$PID_FOLDER/$PID_FILE" ]; then
+	echo "Waiting for process: " `cat $PID_FILE`
+	while [ $SLEEP -gt 0 ]; do
+		sleep 1;
+		SLEEP=`expr $SLEEP - 1 `
+		
+		if [ ! -r "$PID_FOLDER/$PID_FILE" ]; then
+			echo "Process exited normally."
+			break;
+		fi
+		
+		if [ $SLEEP -eq 0 ]; then
+			kill -9 `cat $PID_FOLDER/$PID_FILE` 2>/dev/null
+			rm -f ${PID_FOLDER}/${PID_FILE} 
+			echo "Process killed."
+		fi
+	done
+   fi
+}
+
+      
+case $1 in  
+   start)
+	start;
+	;;   
+   stop)     
+	stop;
+	;;   
+   restart)  
+	stop;
+	start;
+	;;   
+   *)
+	echo "Unknown option: $1"
+	;;
+esac   
+
+exit 0  
+

@@ -3,8 +3,6 @@ import asyncio
 
 from config import ConfigurationReader
 
-logging.basicConfig(filename=ConfigurationReader._log_file, level=logging.INFO)
-
 class SensorsController():
 	_events_initialized = False
 

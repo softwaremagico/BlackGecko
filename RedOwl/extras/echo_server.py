@@ -1,6 +1,8 @@
 import asyncio
 import sys
 import datetime
+import logging
+
 import hangups
 import messaging.authentication as authentication
 from config import ConfigurationReader
@@ -23,7 +25,7 @@ class EchoServer():
 	
 	
 	def _connect(self):
-		print("Connecting...")
+		logging.info("Connecting...")
 		# Obtain hangups authentication cookies.
 		cookies = authentication.get_auth(ConfigurationReader._refresh_token)
 
@@ -46,13 +48,13 @@ class EchoServer():
 
 	@asyncio.coroutine	
 	def _connected(self):
-		print("Server connected:")
+		logging.info("Server connected:")
 		yield from self._get_conversation()		
 		
 
 	@asyncio.coroutine	
 	def _disconnected(self):
-		print("Server disconnected!")
+		logging.info("Server disconnected!")
 	
 	
 	@asyncio.coroutine	
@@ -63,7 +65,7 @@ class EchoServer():
 	
 		
 	def _get_conversation(self):
-		print("\t- Retrieving conversation")
+		logging.info("Retrieving conversation")
 		#Get users and conversations
 		self._user_list, self._conv_list = (
 			yield from hangups.build_user_conversation_list(self._client)
@@ -71,8 +73,9 @@ class EchoServer():
 		#Get specific conversation defined in configuration
 		self._conversation = self._conv_list.get(ConfigurationReader._conversation_id)
 		if (self._conversation == None):
-			sys.exit("Conversation with id '", ConfigurationReader._conversation_id ,"' not found")
-		print("\t- Conversation found!")
+			logging.error("Conversation with id '" + ConfigurationReader._conversation_id  + "' not found")
+			sys.exit("Conversation with id '" + ConfigurationReader._conversation_id + "' not found")
+		logging.info("Conversation found!")
 		self.connected = True
 		self._conversation.on_event.add_observer(self._conversation_event_launched)
 		
@@ -100,12 +103,12 @@ class EchoServer():
 						
 	
 	def _text_received(self, text):
-		print("Text received: ", text)		
+		logging.info("Text received '" + text + "'.")		
 		asyncio.async(self.send_message(text))
 		
 	@asyncio.coroutine
 	def send_message(self, message):
-		print("##################################")
+		logging.info("Text send '" +  message + "'.")
 		"""Send message using connected hangups. Client instance."""
 
 		# Instantiate a SendChatMessageRequest Protocol Buffer message describing the request.

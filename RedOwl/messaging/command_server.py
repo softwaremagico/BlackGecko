@@ -10,7 +10,6 @@ from config import ConfigurationReader
 from sensors.sensors import SensorsController
 
 epoch = datetime.datetime.utcfromtimestamp(0)
-logging.basicConfig(filename=ConfigurationReader._log_file, level=logging.INFO)
 
 def unix_time_micros(dt):
 	return (dt - epoch).total_seconds() * 1000000.0

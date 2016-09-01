@@ -1,6 +1,7 @@
 import os
 import argparse
 import logging
+import sys
 
 import messaging.alert_client
 from extras.echo_server import EchoServer
@@ -14,6 +15,7 @@ _command_server = False
 _conversations_info = False
 
 logging.basicConfig(filename=ConfigurationReader._log_file, level=logging.INFO)
+logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 
 def main():
 	"""Main entry point."""
@@ -37,6 +39,8 @@ def main():
 def handle_arguments():
 	parser = argparse.ArgumentParser(description='An alarm system based on Hangouts.', epilog="Copyright© 2016 Jorge Hortelano")
 	
+	parser.add_argument('-f', '--configuration-file', help='Selects a specific configuration file.')
+	
 	#Exclusive options (different executions available)
 	group = parser.add_mutually_exclusive_group()
 	group.add_argument('-e', '--echo-server', action='store_true', help='Enables echo server for testing communications.')
@@ -45,6 +49,9 @@ def handle_arguments():
 	group.add_argument('-i', '--conversations-info', action='store_true', help='Shows all available conversations ids.')
 
 	args = parser.parse_args()
+	
+	if(args.configuration_file):
+		ConfigurationReader().read(args.configuration_file)
 	
 	if (args.echo_server):
 		global _echo_server
