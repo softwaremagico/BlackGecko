@@ -50,6 +50,10 @@ def handle_arguments():
 
 	args = parser.parse_args()
 	
+	if not any(vars(parser.parse_args()).values()):
+		parser.error('No arguments provided.')
+		sys.exit(0)
+	
 	if(args.configuration_file):
 		ConfigurationReader().read(args.configuration_file)
 	

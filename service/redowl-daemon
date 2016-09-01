@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ### BEGIN INIT INFO
 # Provides:          RedOwl
@@ -29,39 +29,39 @@ WAIT_BEFORE_KILL=30
 
 start()
 {
-	echo "Starting RedOwl sendor alert system..."
-	echo "--------------------------------------------"
+	log_daemon_msg "Starting RedOwl sendor alert system..."
+	log_daemon_msg "--------------------------------------------"
 	mkdir -p ${PID_FOLDER} 2>/dev/null
 	${EXEC} -c -f ${CONFIG_FILE}
-	echo ""
+	log_daemon_msg ""
 }
 
 stop()
 {
-	echo "Stopping RedOwl sendor alert system..."
-	echo "--------------------------------------------"
+	log_daemon_msg "Stopping RedOwl sendor alert system..."
+	log_daemon_msg "--------------------------------------------"
 	forceStop;
-	echo ""
+	log_daemon_msg ""
 }
 
 forceStop() 
 {
    SLEEP=$WAIT_BEFORE_KILL
    if [ -r "$PID_FOLDER/$PID_FILE" ]; then
-	echo "Waiting for process: " `cat $PID_FILE`
+	log_daemon_msg "Waiting for process: " `cat $PID_FILE`
 	while [ $SLEEP -gt 0 ]; do
 		sleep 1;
 		SLEEP=`expr $SLEEP - 1 `
 		
 		if [ ! -r "$PID_FOLDER/$PID_FILE" ]; then
-			echo "Process exited normally."
+			log_daemon_msg "Process exited normally."
 			break;
 		fi
 		
 		if [ $SLEEP -eq 0 ]; then
 			kill -9 `cat $PID_FOLDER/$PID_FILE` 2>/dev/null
 			rm -f ${PID_FOLDER}/${PID_FILE} 
-			echo "Process killed."
+			log_daemon_msg "Process killed."
 		fi
 	done
    fi
