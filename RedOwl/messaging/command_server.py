@@ -128,19 +128,21 @@ class CommandServer():
 			if self._alias.lower() in event.text.lower():
 				self._select_node(user)
 		elif "disable" ==  event.text.lower():
-			if user.id_ in self._user_selection :
+			if (self.is_node_selected()) :
 				self._disable_node(user)
 		elif "enable" ==  event.text.lower():
-			if user.id_ in self._user_selection:
+			if (self.is_node_selected()) :
 				self._enable_node(user)
 		# Execute command if possible.
 		elif event.text.lower() == "reboot":
-			command = ['sudo', 'reboot']
-			self.execute_command(command)
+			if (self.is_node_selected()) :
+				command = ['sudo', 'reboot']
+				self.execute_command(command)
 		else:
 		# just print info
-			logging.warning("Invalid command '" + event.text +"' from '" + str(user.id_) +"'.")
-			asyncio.async(self.send_message("Invalid command '" + event.text + "'."))
+			if (self.is_node_selected()) :
+				logging.warning("Invalid command '" + event.text +"' from '" + str(user.id_) +"'.")
+				asyncio.async(self.send_message("Invalid command '" + event.text + "'."))
 
 	
 	def _select_node(self, user):
@@ -155,6 +157,8 @@ class CommandServer():
 			self._user_selection.remove(user.id_)
 			asyncio.async(self.send_message("Unselecting node '" + self._alias +"'"))
 	
+	def is_node_selected(self):
+		return user.id_ in self._user_selection
 	
 	def _disable_node(self, user):
 		if user.id_ in self._node_enabled: 
@@ -197,6 +201,7 @@ class CommandServer():
 	#Executes a command if the user is in the allowed_user list. 
 	def execute_command(self, command):	
 		status = subprocess.check_output(command)
+		self.send_message("Executing '" + str(command)+"'.")
 		logging.debug("Status: " + status)
 		asyncio.async(self.send_message(status))
 		
