@@ -41,8 +41,8 @@ class ConfigurationReader():
 		ConfigurationReader._log_file = server_conf['log_path']
 		
 		server_conf = config['sensors']
-		ConfigurationReader._infrared_sensor_pin = server_conf['infrared_pin']
-		ConfigurationReader._sound_sensor_pin = server_conf['sound_pin']
+		ConfigurationReader._infrared_sensor_pin = int(server_conf['infrared_pin'])
+		ConfigurationReader._sound_sensor_pin = int(server_conf['sound_pin'])
 
 
 	def write_user_folder():
