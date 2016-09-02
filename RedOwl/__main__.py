@@ -19,6 +19,12 @@ logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 
 def main():
 	"""Main entry point."""
+	try:
+		import hangups
+	except ImportError:
+		logging.error("Hangups is required! Install it typing 'pip3 install hangups'.")
+		sys.exit(0)
+	
 	handle_arguments()
 	
 	
