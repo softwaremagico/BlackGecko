@@ -131,8 +131,11 @@ class Server():
 		
 	
 	@asyncio.coroutine
-	def send_image(self, text, image_file):
+	def send_image(self, text, image_path):
+		logging.info("Sending Image...")
 		#Upload image and send message with url.
-		segment=[hangups.ChatMessageSegment(text).serialize()]
-		self._conversation.send_message(segment, image_file)
+		segments = hangups.ChatMessageSegment.from_str(text)
+		image = open(image_path, 'rb')
+		yield from  self._conversation.send_message(segments, image)
+		logging.info("Image sended!")
 		

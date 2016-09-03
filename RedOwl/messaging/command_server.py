@@ -46,6 +46,9 @@ class CommandServer(Server):
 			if (self.is_node_selected(user)) :
 				command = ['sudo', 'reboot']
 				self.execute_command(command)
+		elif event.text.lower() == "image":
+			if (self.is_node_selected(user)) :
+				asyncio.async(self.send_image("Image test from '" + self._alias +"'", "./images/redowl.png"))
 		else:
 		# just print info
 			if (self.is_node_selected(user)) :
@@ -88,7 +91,7 @@ class CommandServer(Server):
 
 		
 	def show_help(self):
-		asyncio.async(self.send_message("Available commands:\n\thello\n\tstatus\n\tselect <alias | all>\n\tenable\n\tdisable"))
+		asyncio.async(self.send_message("Available commands:\n\thello\n\tstatus\n\tselect [<alias> | all]\n\tenable\n\tdisable\n\timage"))
 	
 		
 	def send_status(self, user):
