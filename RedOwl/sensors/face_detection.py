@@ -18,6 +18,7 @@ class FaceDetection():
 		
 
 	def _detect(self, output_file, time_of_capture):
+		print("Detecting.....")
 		time_duration = time.time() + time_of_capture
 		best_face_size = 0
 		
@@ -45,9 +46,9 @@ class FaceDetection():
 					
 			
 			# Display the resulting frame
-			cv2.imshow('Video', frame)			
-			if cv2.waitKey(1) & 0xFF == ord('q'):
-				break
+			#cv2.imshow('Video', frame)			
+			#if cv2.waitKey(1) & 0xFF == ord('q'):
+			#	break
 
 		# When everything is done, release the capture
 		self.video_capture.release()

@@ -11,6 +11,7 @@ class ConfigurationReader():
 	_infrared_sensor_pin = 0
 	_sound_sensor_pin = 0
 	_log_file = ""
+	_cascade_file = ""
 
 
 	def __init__(self):
@@ -18,13 +19,12 @@ class ConfigurationReader():
 		if (os.path.isfile(config_file)):
 			#User folder configuration file.
 			self.read(config_file)
-		elif(os.path.isfile("/etc/"+ConfigurationReader._config_file)):
+		elif(os.path.isfile("/etc/redowl/"+ConfigurationReader._config_file)):
 			#System configuration file.
-			self.read("/etc/"+ConfigurationReader._config_file)
+			self.read("/etc/redowl/"+ConfigurationReader._config_file)
 		else:
 			#Application configuration file.
-			self.read(ConfigurationReader._config_file)
-		
+			self.read(ConfigurationReader._config_file)		
 
 
 	def read(self, file):
@@ -47,6 +47,7 @@ class ConfigurationReader():
 		server_conf = config['face_detection']
 		ConfigurationReader._frame_width = int(server_conf['frame_width'])
 		ConfigurationReader._frame_heigh = int(server_conf['frame_heigh'])
+		ConfigurationReader._cascade_file = server_conf['haarcascade_file']
 
 
 	def write_user_folder():

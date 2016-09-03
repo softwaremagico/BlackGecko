@@ -5,6 +5,7 @@ import logging
 from sensors.sensors import SensorsController
 from config import ConfigurationReader
 from .server import Server
+from sensors.face_detection import FaceDetection
 
 
 class CommandServer(Server):
@@ -48,7 +49,7 @@ class CommandServer(Server):
 				self.execute_command(command)
 		elif event.text.lower() == "image":
 			if (self.is_node_selected(user)) :
-				asyncio.async(self.send_image("Image test from '" + self._alias +"'", "./images/redowl.png"))
+				self.send_face_image()
 		else:
 		# just print info
 			if (self.is_node_selected(user)) :
@@ -75,6 +76,7 @@ class CommandServer(Server):
 		
 	def is_node_enabled(self, user):
 		return user.id_ in self._node_enabled
+	
 	
 	def _disable_node(self, user):
 		if user.id_ in self._node_enabled: 
@@ -112,4 +114,11 @@ class CommandServer(Server):
 		self.send_message("Executing '" + str(command)+"'.")
 		logging.debug("Status: " + status)
 		asyncio.async(self.send_message(status))
+		
+		
+	def send_face_image(self):
+		#asyncio.async(self.send_message("Creating image"))
+		face_detect =  FaceDetection(ConfigurationReader._cascade_file)
+		face_detect._detect("/tmp/detection.jpg", 5)
+		asyncio.async(self.send_image("Image test from '" + self._alias +"'", "/tmp/detection.jpg"))
 		
