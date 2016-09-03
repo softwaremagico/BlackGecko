@@ -18,7 +18,7 @@
 ######################################
 
 EXEC=/usr/bin/redowl
-CONFIG_FILE=/etc/redowl.conf
+CONFIG_FILE=/etc/redowl/redowl.conf
 PID_FOLDER=/var/run/redowl
 PID_FILE=redowl.pid
 WAIT_BEFORE_KILL=30
