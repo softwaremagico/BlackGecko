@@ -4,7 +4,7 @@ import logging
 import sys
 
 import messaging.alert_client
-from extras.echo_server import EchoServer
+from messaging.echo_server import EchoServer
 from extras.conversations_info import ConversationsInfo
 from messaging.command_server import CommandServer
 from config import ConfigurationReader

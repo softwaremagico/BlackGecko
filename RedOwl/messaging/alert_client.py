@@ -1,3 +1,5 @@
+#This is obtained from the examples of the hangups application.
+
 import asyncio
 import hangups
 import messaging.authentication as authentication
