@@ -36,7 +36,7 @@ class SensorsController():
 
 
 	def sound_sensor(self, message_manager_f):
-		asyncio.async(message_manager_f("📢 Sound detected in '" + ConfigurationReader.__alias + "'! 📢"))
+		asyncio.async(message_manager_f("📢 Sound detected in '" + ConfigurationReader._alias + "'! 📢"))
 
 		
 	def sensor_started(self, message_manager_f):

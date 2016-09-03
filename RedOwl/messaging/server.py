@@ -129,3 +129,10 @@ class Server():
 		# Make the request to the Hangouts API.
 		yield from self._client.send_chat_message(request)
 		
+	
+	@asyncio.coroutine
+	def send_image(self, text, image_file):
+		#Upload image and send message with url.
+		segment=[hangups.ChatMessageSegment(text).serialize()]
+		self._conversation.send_message(segment, image_file)
+		

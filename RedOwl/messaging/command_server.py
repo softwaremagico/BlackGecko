@@ -25,12 +25,15 @@ class CommandServer(Server):
 		#Node list
 		elif "hello" ==  event.text.lower(): 
 			asyncio.async(self.send_message("Hello from '" + self._alias+"'!"))
+		#get status
+		elif "status" in event.text.lower():
+			self.send_status(user)
 		#Enable/Disable node if needed.
 		elif "unselect" in event.text.lower():
-			if self._alias.lower() in event.text.lower():
+			if (self._alias.lower() in event.text.lower() or 'all' in event.text.lower()):
 				self._unselect_node(user)
 		elif "select" in event.text.lower():
-			if self._alias.lower() in event.text.lower():
+			if (self._alias.lower() in event.text.lower() or 'all' in event.text.lower()):
 				self._select_node(user)
 		elif "disable" ==  event.text.lower():
 			if (self.is_node_selected(user)) :
@@ -65,7 +68,10 @@ class CommandServer(Server):
 	
 	def is_node_selected(self, user):
 		return user.id_ in self._user_selection
-	
+		
+		
+	def is_node_enabled(self, user):
+		return user.id_ in self._node_enabled
 	
 	def _disable_node(self, user):
 		if user.id_ in self._node_enabled: 
@@ -82,7 +88,19 @@ class CommandServer(Server):
 
 		
 	def show_help(self):
-		asyncio.async(self.send_message("Available commands:\n\thello\n\tselect <alias>\n\tenable\n\tdisable"))
+		asyncio.async(self.send_message("Available commands:\n\thello\n\tstatus\n\tselect <alias | all>\n\tenable\n\tdisable"))
+	
+		
+	def send_status(self, user):
+		if self.is_node_selected(user):
+			selected = " [Selected]"
+		else:
+			selected = ""
+		if self.is_node_enabled(user):
+			enabled = "enabled"
+		else:
+			enabled = "disabled"
+		asyncio.async(self.send_message("Node '" + self._alias + "'"+selected+": " + enabled))
 		
 	
 	#Executes a command if the user is in the allowed_user list. 
