@@ -22,7 +22,7 @@ def main():
 	try:
 		import hangups
 	except ImportError:
-		logging.error("Hangups is required! Install it typing 'pip3 install hangups'.")
+		logging.error("Hangups is required! Install it typing 'pip3 install hangups' as root.")
 		sys.exit(0)
 	
 	handle_arguments()
