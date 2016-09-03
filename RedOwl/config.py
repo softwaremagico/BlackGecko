@@ -43,6 +43,10 @@ class ConfigurationReader():
 		server_conf = config['sensors']
 		ConfigurationReader._infrared_sensor_pin = int(server_conf['infrared_pin'])
 		ConfigurationReader._sound_sensor_pin = int(server_conf['sound_pin'])
+		
+		server_conf = config['face_detection']
+		ConfigurationReader._frame_width = int(server_conf['frame_width'])
+		ConfigurationReader._frame_heigh = int(server_conf['frame_heigh'])
 
 
 	def write_user_folder():
