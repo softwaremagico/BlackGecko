@@ -18,6 +18,12 @@ Install [hangups](https://github.com/tdryer/hangups) simply typing:
 ```
 pip3 install hangups.
 ```
+But I would recommend to install last version of hangups. Then:
+```
+git clone https://github.com/tdryer/hangups.git
+cd hangups
+python3 setup.py
+```
 
 After installing hangups API. Install this application running inside the application folder the next command:
 ```
