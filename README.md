@@ -10,6 +10,7 @@ This software has been developed using a Raspberry Pi 2 Model B with a LM393 Sou
 ## Dependencies
   1. Python 3.3+
   2. Hangups api for python
+  3. cv2
 
 ## Installation
 
