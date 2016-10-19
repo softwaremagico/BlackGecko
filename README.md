@@ -59,17 +59,20 @@ It will show a link to ask for this refresh token. Perform all required tasks sh
 
 It it is working, you can see a file called `refresh_token.txt` created by hangups at `/home/<user>/.cache/hangups/`. Copy the content into the `redowl.con` configuration file. 
 
-> ### Note
-> In some cases, google launches a 400 error. In this case, follow this instructions:
->    1. Go to this [url](https://accounts.google.com/o/oauth2/programmatic_auth?hl=en&scope=https%3A%2F%2Fwww.google.com%2Faccounts%2FOAuthLogin+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&client_id=936475272427.apps.googleusercontent.com&access_type=offline&delegated_client_id=183697946088-m3jnlsqshjhh5lbvg05k46q1k4qqtrgn.apps.googleusercontent.com&top_level_cookie=1)
->    2. Enter your username, click next.
->    3. Right click page background, inspect
->    4. Go to the network tab.
->    5. Enter your password, click sign in
->    6. Click the first row, the one that says "programmatic_auth"
->    7. Scroll down in the right-side panel, find "set-cookie"
->    8. Your code should be there, after "oauth_code=", up to but not including the semicolon.
->    9. Copy it and use it.
+### ___Note___
+
+___In some cases, google launches a 400 error (OAuth2 error). In this case, follow this instructions:___
+
+1. ___Go to this url___ [url](https://accounts.google.com/o/oauth2/programmatic_auth?hl=en&scope=https%3A%2F%2Fwww.google.com%2Faccounts%2FOAuthLogin+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&client_id=936475272427.apps.googleusercontent.com&access_type=offline&delegated_client_id=183697946088-m3jnlsqshjhh5lbvg05k46q1k4qqtrgn.apps.googleusercontent.com&top_level_cookie=1)
+2. ___Enter your username, click next.___
+3. ___Right click page background, inspect___
+4. ___Go to the network tab.___
+5. ___Enter your password, click sign in___
+6. ___Click the first row, the one that says "programmatic_auth"___
+7. ___Scroll down in the right-side panel, find "set-cookie"___
+8. ___Your code should be there, after "oauth_code=", up to but not including the semicolon.___
+9. ___Copy it and use it.___
+
 
 
 After obtaining the refresh token, the conversation id can be obtained if you run the application with:
