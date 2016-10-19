@@ -57,7 +57,7 @@ hangups
 
 It will show a link to ask for this refresh token. Perform all required tasks showed in the console. Execute it again to check that now hangups runs correctly and you can see the command-line client for hangouts. If it is not working, see the hangups [documentation](https://github.com/tdryer/hangups).
 
-It it is working, you can see a file called `refresh_token.txt` created by hangups. Copy the content into the `redowl.con` configuration file. 
+It it is working, you can see a file called `refresh_token.txt` created by hangups at `/home/<user>/.cache/hangups/`. Copy the content into the `redowl.con` configuration file. 
 
 ### Note
 In some cases, google launches a 400 error. In this case, follow this instructions:
