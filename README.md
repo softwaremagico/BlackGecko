@@ -54,7 +54,9 @@ In both cases, the configuration file will have this fields:
 	infrared_pin = 0
 	sound_pin = 0
 
-The most important fields are the one in `[authenticaion]`:
+The most important fields are the one in `[authenticaion]`: `refresh_token` and `conversation_id`.
+
+### Obtaining the refresh_token
 
 The refresh token is needed to use the API with Google. To obtain it, execute hangups one time:
 ```
@@ -79,14 +81,18 @@ ___In some cases, google launches a 400 error (OAuth2 error). In this case, foll
 8. ___Your code should be there, after "oauth_code=", up to but not including the semicolon.___
 9. ___Copy it and use it.___
 
-
+### Selecting the conversation
 
 After obtaining the refresh token, the conversation id can be obtained if you run the application with:
 ```
 redowl --conversations-info
 ```
 
-This will show a list with all conversations id available. Try one by one until you are connected to the correct conversation. For testing it, you can use:
+This will show a list with all conversations id available. Try one by one until you are connected to the correct conversation. 
+
+### Testing the configuration
+
+For testing it, you can use:
 ```
 redowl --test-alert
 ```
