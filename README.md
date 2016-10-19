@@ -44,7 +44,7 @@ In both cases, the configuration file will have this fields:
 
 	[authentication]
 	conversation_id = XXXXXXXXXXXXXXXXXXXXXXXXX
-	refresh_token = XXXXXXXXXXXXXXXXXXXXXXXXX
+	refresh_token = /home/<user>/.cache/hangups/refresh_token.txt
 
 	[node]
 	alias = RaspCam
@@ -63,7 +63,7 @@ hangups
 
 It will show a link to ask for this refresh token. Perform all required tasks showed in the console. Execute it again to check that now hangups runs correctly and you can see the command-line client for hangouts. If it is not working, see the hangups [documentation](https://github.com/tdryer/hangups).
 
-It it is working, you can see a file called `refresh_token.txt` created by hangups at `/home/<user>/.cache/hangups/`. Copy the content into the `redowl.con` configuration file. 
+It it is working, you can see a file called `refresh_token.txt` created by hangups at `/home/<user>/.cache/hangups/`. Set the path to this file into the `redowl.conf` configuration file. 
 
 ### ___Note___
 
