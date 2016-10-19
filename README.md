@@ -22,6 +22,13 @@ After installing hangups API. Install this application running inside the applic
 ```
 python setup.py install
 ```
+### Installing using a debian package
+The application has a script for generating a debian package. If you prefer to install on this way, please, install first `debuild`, `devscripts` and `debhelper`. This package can be installed using `apt-get install <package>`.
+
+After this, you can execute the package generator script as follows:
+```
+sudo ./package.sh
+```
 
 ## Configuration
 The basic configuration file is in `/etc/redowl.conf`. This configuration file will be copied to the user local configuration the first time the application is launched. If you want to have different users with different configuration, then edit `/home/<user>/.config/RedOWl/redowl.conf`.
