@@ -1,6 +1,6 @@
 <img src="./images/blackgecko.png" width="128" alt="BlackGecko" align="middle">
 
-# Redowl
+# BlackGecko
 Basic home intrussion detection system based in Hangouts and a Raspberry Pi. When an intrussion has been detected, it sends a hangouts message as an alarm. 
 
 This project is based on the [hangups] (https://github.com/tdryer/hangups) API for Google Hangouts. It has been developed as a continuation of the [Beholder](https://github.com/jorgehortelano/beholder) project, that uses Whatsapp instead of Google Hangouts.
