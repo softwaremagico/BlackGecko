@@ -22,80 +22,37 @@ class SensorsController():
 				gpio.setmode(gpio.BCM)
 				if int(ConfigurationReader._infrared_sensor_pin) > 0 :
 					gpio.setup(ConfigurationReader._infrared_sensor_pin, gpio.IN)
-					gpio.add_event_detect(ConfigurationReader._infrared_sensor_pin, gpio.RISING, callback=self.on_gpio_event, bouncetime=500)
+					gpio.add_event_detect(ConfigurationReader._infrared_sensor_pin, gpio.RISING, callback=self.on_gpio_motion_event, bouncetime=500)
 				if int(ConfigurationReader._sound_sensor_pin) > 0 :
 					gpio.setup(ConfigurationReader._sound_sensor_pin, gpio.IN)
-					gpio.add_event_detect(ConfigurationReader._sound_sensor_pin, gpio.RISING, callback=self.sound_detection_event, bouncetime=500)
+					gpio.add_event_detect(ConfigurationReader._sound_sensor_pin, gpio.RISING, callback=self.on_gpio_sound_event, bouncetime=500)
 				logging.info("Sensors enabled!")
-				asyncio.async(self._message_manager("Started..."))
 				# run the event loop
 				self._loop = asyncio.get_event_loop()
-				#self._loop.run_forever()
-				#self._loop.close()
+				self.sensor_started()
 		except ImportError:
 			logging.error("No GPIO library found! Sensors are not enabled!")
 			self.sensor_error(message_manager_f, "🚫 No GPIO library found! Sensors are not enabled! 🚫")
 
-	def on_gpio_event(self, channel):
-		print('Rising event detected')
-		self._loop.call_soon_threadsafe(self.gpio_event_on_loop_thread)
+
+	def on_gpio_motion_event(self, channel):
+		print('Motion detected')
+		self._loop.call_soon_threadsafe(self.gpio_motion_event_on_loop_thread)
 
 
-	def gpio_event_on_loop_thread(self):
-		asyncio.async(self._message_manager("Tururu!"))
-
-	@asyncio.coroutine
-	def stop_loop(self):
-		yield from asyncio.sleep(1)
-		print('Stopping Event Loop')
-		asyncio.get_event_loop().stop()
+	def on_gpio_sound_event(self, channel):
+		print('Sound detected')
+		self._loop.call_soon_threadsafe(self.gpio_sound_event_on_loop_thread)
 
 
-	@asyncio.coroutine
-	def motion_detection_event(self, channel):
-		print("Motion")
-		logging.info("Motion!")
-		if self._loop is None:
-			print(":(")
-			return
-		# this enqueues a call to message_manager_f() 
-		self._loop.call_soon_threadsafe(self._message_manager("🚨Motion detected in '" + ConfigurationReader._alias + "'!  "))
-		print("---")
-
-	@asyncio.coroutine
-	def sound_detection_event(self, channel):
-		print("Sound!")
-		logging.info("Sound!")
-		if self._loop is None:
-			print(":(")
-			return
-		# this enqueues a call to message_manager_f() 
-		self._loop.call_soon_threadsafe(self._message_manager("🚨Motion detected in '" + ConfigurationReader._alias+  "'!  "))
-		print("---")
-
-			
-	def motion_sensor(self):
-		print("Motion")
-		event_loop = asyncio.get_event_loop()
-		try:
-			event_loop.run_until_complete(self._message_manager("🚨Motion detected in '" + ConfigurationReader._alias + "'!  "))
-		finally:
-			event_loop.close()
-		#asyncio.async(self._message_manager("🚨Motion detected in '" + ConfigurationReader._alias + "'! 🚨"))
-		print("---")
+	def gpio_motion_event_on_loop_thread(self):
+		asyncio.async(self._message_manager("🚨 Motion detected in '" + ConfigurationReader._alias + "'! 🚨 "))
 
 
-	def sound_sensor(self):
-		print("Sound!")
-		event_loop = asyncio.get_event_loop()
-		try:
-			event_loop.run_until_complete(self._message_manager("🚨Motion detected in '" + ConfigurationReader._alias + "'!   "))
-		finally:
-			event_loop.close()
-		#asyncio.async(self._message_manager("📢 Sound detected in '" + ConfigurationReader._alias + "'! 📢"))
-		print("---")
-
-		
+	def gpio_sound_event_on_loop_thread(self):
+		asyncio.async(self._message_manager("🚨 Sound detected in '" + ConfigurationReader._alias + "'!  🚨 "))
+	
+	
 	def sensor_started(self):
 		asyncio.async(self._message_manager("Enabling node '" + ConfigurationReader._alias + "' 🏁"))
 
