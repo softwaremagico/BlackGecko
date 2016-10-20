@@ -1,15 +1,15 @@
-Source: redowl
+Source: blackgecko
 Section: python
 Priority: optional
 Maintainer: Jorge Hortelano, <jorgehortelano@gmail.com>
 Build-Depends: debhelper (>= 7), python3
 X-Python-Version: >= 3.3
 
-Package: redowl
+Package: blackgecko
 Architecture: all
 Section: python
 Essential: no
-Replaces: redowl
-Provides: redowl
+Replaces: blackgecko
+Provides: blackgecko
 Description: 
 	Python application for detecting intrussions. 

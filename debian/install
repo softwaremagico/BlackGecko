@@ -1,4 +1,4 @@
-redowl usr/bin/
-redowl.conf  etc/redowl
-haarcascade_frontalface_default.xml etc/redowl
-service/redowl-daemon etc/init.d/
+blackgecko usr/bin/
+blackgecko.conf  etc/blackgecko
+haarcascade_frontalface_default.xml etc/blackgecko
+service/blackgecko-daemon etc/init.d/

@@ -3,7 +3,7 @@ import appdirs
 import os
 
 class ConfigurationReader():
-	_config_file = 'redowl.conf'
+	_config_file = 'blackgecko.conf'
 	_app_dirs = appdirs.AppDirs('RedOWl', 'softwaremagico')
 	_conversation_id = ""
 	_refresh_token = ""
@@ -19,9 +19,9 @@ class ConfigurationReader():
 		if (os.path.isfile(config_file)):
 			#User folder configuration file.
 			self.read(config_file)
-		elif(os.path.isfile("/etc/redowl/"+ConfigurationReader._config_file)):
+		elif(os.path.isfile("/etc/blackgecko/"+ConfigurationReader._config_file)):
 			#System configuration file.
-			self.read("/etc/redowl/"+ConfigurationReader._config_file)
+			self.read("/etc/blackgecko/"+ConfigurationReader._config_file)
 		else:
 			#Application configuration file.
 			self.read(ConfigurationReader._config_file)		

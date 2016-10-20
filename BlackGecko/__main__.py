@@ -28,7 +28,7 @@ def main():
 	handle_arguments()
 	
 	
-	logging.info("RedOwl starting....")
+	logging.info("BlackGecko starting....")
 	
 	if (_echo_server):
 		EchoServer()
@@ -40,7 +40,7 @@ def main():
 		ConversationsInfo()
 	
 	#message_service.connect_to_hangouts()
-	logging.info("RedOwl closing....")
+	logging.info("BlackGecko closing....")
 	
 def handle_arguments():
 	parser = argparse.ArgumentParser(description='An alarm system based on Hangouts.', epilog="Copyright© 2016 Jorge Hortelano")

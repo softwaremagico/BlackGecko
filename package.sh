@@ -1,12 +1,12 @@
 #!/bin/sh
 
-cd RedOwl
-zip -r ../RedOwl.zip *
+cd BlackGecko
+zip -r ../BlackGecko.zip *
 cd ..
-echo '#!/usr/bin/env python3' | cat - RedOwl.zip > redowl
-chmod +x redowl
-#mv redowl debian/
-rm RedOwl.zip
+echo '#!/usr/bin/env python3' | cat - BlackGecko.zip > blackgecko
+chmod +x blackgecko
+#mv blackgecko debian/
+rm BlackGecko.zip
 
 debuild --no-tgz-check
-rm redowl
+rm blackgecko

@@ -1,4 +1,4 @@
-<img src="./images/redowl.png" width="128" alt="RedOwl" align="middle">
+<img src="./images/blackgecko.png" width="128" alt="BlackGecko" align="middle">
 
 # Redowl
 Basic home intrussion detection system based in Hangouts and a Raspberry Pi. When an intrussion has been detected, it sends a hangouts message as an alarm. 
@@ -39,7 +39,7 @@ sudo ./package.sh
 ```
 
 ## Configuration
-The basic configuration file is in `/etc/redowl.conf`. This configuration file will be copied to the user local configuration the first time the application is launched. If you want to have different users with different configuration, then edit `/home/<user>/.config/RedOWl/redowl.conf`.
+The basic configuration file is in `/etc/blackgecko.conf`. This configuration file will be copied to the user local configuration the first time the application is launched. If you want to have different users with different configuration, then edit `/home/<user>/.config/RedOWl/blackgecko.conf`.
 
 In both cases, the configuration file will have this fields:
 
@@ -49,7 +49,7 @@ In both cases, the configuration file will have this fields:
 
 	[node]
 	alias = RaspCam
-	log_path = /tmp/RedOwl.log
+	log_path = /tmp/BlackGecko.log
 
 	[sensors]
 	infrared_pin = 0
@@ -66,7 +66,7 @@ hangups
 
 It will show a link to ask for this refresh token. Perform all required tasks showed in the console. Execute it again to check that now hangups runs correctly and you can see the command-line client for hangouts. If it is not working, see the hangups [documentation](https://github.com/tdryer/hangups).
 
-It it is working, you can see a file called `refresh_token.txt` created by hangups at `/home/<user>/.cache/hangups/`. Set the path to this file into the `redowl.conf` configuration file. 
+It it is working, you can see a file called `refresh_token.txt` created by hangups at `/home/<user>/.cache/hangups/`. Set the path to this file into the `blackgecko.conf` configuration file. 
 
 ### ___Note___
 
@@ -86,7 +86,7 @@ ___In some cases, google launches a 400 error (OAuth2 error). In this case, foll
 
 After obtaining the refresh token, the conversation id can be obtained if you run the application with:
 ```
-redowl --conversations-info
+blackgecko --conversations-info
 ```
 
 This will show a list with all conversations id available. Try one by one until you are connected to the correct conversation. 
@@ -95,7 +95,7 @@ This will show a list with all conversations id available. Try one by one until 
 
 For testing it, you can use:
 ```
-redowl --test-alert
+blackgecko --test-alert
 ```
 This command will send a 'Test message' text to the selected conversation. 
 
@@ -103,7 +103,7 @@ This command will send a 'Test message' text to the selected conversation.
 
 To launch the application as a server execute:
 
-	redowl -c
+	blackgecko -c
 	
 
 If everything is running correctly, now you can use a standard hangouts client (i.e. in your mobile phone) to communicate with the application. You can use the next messages as commands:

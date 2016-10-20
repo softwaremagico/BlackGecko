@@ -1,15 +1,15 @@
 #!/bin/sh
 
 ### BEGIN INIT INFO
-# Provides:          RedOwl
+# Provides:          BlackGecko
 # Required-Start:    $local_fs
 # Required-Stop:     $local_fs
 # Should-Start:      $network
 # Should-Stop:       $network
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: RedOwl Hangouts alert
-# Description: RedOwl Hangouts alert
+# Short-Description: BlackGecko Hangouts alert
+# Description: BlackGecko Hangouts alert
 #
 ### END INIT INFO
 
@@ -17,10 +17,10 @@
 # CONFIGURATION
 ######################################
 
-EXEC=/usr/bin/redowl
-CONFIG_FILE=/etc/redowl/redowl.conf
-PID_FOLDER=/var/run/redowl
-PID_FILE=redowl.pid
+EXEC=/usr/bin/blackgecko
+CONFIG_FILE=/etc/blackgecko/blackgecko.conf
+PID_FOLDER=/var/run/blackgecko
+PID_FILE=blackgecko.pid
 WAIT_BEFORE_KILL=30
 
 ######################################
@@ -29,7 +29,7 @@ WAIT_BEFORE_KILL=30
 
 start()
 {
-	log_daemon_msg "Starting RedOwl sendor alert system..."
+	log_daemon_msg "Starting BlackGecko sendor alert system..."
 	log_daemon_msg "--------------------------------------------"
 	mkdir -p ${PID_FOLDER} 2>/dev/null
 	${EXEC} -c -f ${CONFIG_FILE}
@@ -38,7 +38,7 @@ start()
 
 stop()
 {
-	log_daemon_msg "Stopping RedOwl sendor alert system..."
+	log_daemon_msg "Stopping BlackGecko sendor alert system..."
 	log_daemon_msg "--------------------------------------------"
 	forceStop;
 	log_daemon_msg ""

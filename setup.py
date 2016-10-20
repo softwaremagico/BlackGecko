@@ -4,25 +4,25 @@ import os
 import sys
 
 if sys.version_info < (3, 3):
-    raise RuntimeError("RedOwl requires Python 3.3+")
+    raise RuntimeError("BlackGecko requires Python 3.3+")
 
 
 # Find __version__ without import that requires dependencies to be installed:
 exec(open(os.path.join(
-    os.path.dirname(__file__), 'RedOwl/version.py'
+    os.path.dirname(__file__), 'BlackGecko/version.py'
 )).read())
 
-deps = ['hangups==0.3.6', 'RedOwl']
+deps = ['hangups==0.3.6', 'BlackGecko']
 
 setup(
-    name='RedOwl',
+    name='BlackGecko',
     version=__version__,
-    url='https://github.com/jorgehortelano/RedOwl',
+    url='https://github.com/jorgehortelano/BlackGecko',
     author='Jorge Hortelano',
     author_email='softwaremagico@gmail.com',
     license='GNU GPL v3',
     tests_require=[],
-    #scripts = ['redowl-cli'],
+    #scripts = ['blackgecko-cli'],
     install_requires = deps,
     dependency_links = [
         'https://github.com/tdryer/hangups',

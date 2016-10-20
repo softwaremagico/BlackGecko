@@ -4,11 +4,11 @@
 /build
 /dist
 /*.egg-info
-redowl.conf
+blackgecko.conf
 /.pybuild
-debian/redowl
+debian/blackgecko
 debian/debhelper-build-stamp
-debian/redowl.debhelper.log
-debian/redowl.postinst.debhelper
-debian/redowl.prerm.debhelper
-debian/redowl.substvars
+debian/blackgecko.debhelper.log
+debian/blackgecko.postinst.debhelper
+debian/blackgecko.prerm.debhelper
+debian/blackgecko.substvars
