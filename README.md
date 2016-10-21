@@ -1,7 +1,7 @@
 <img src="./images/blackgecko.png" width="128" alt="BlackGecko" align="middle">
 
 # BlackGecko
-Basic home intrussion detection system based in Hangouts and a Raspberry Pi. When an intrussion has been detected, it sends a hangouts message as an alarm. 
+Basic home intrussion detection system using a Raspberry Pi. Combines OpenCV and sensors input for detecting intrussions, and it uses hangouts (hangups API) to send a message as an alarm. 
 
 This project is based on the [hangups] (https://github.com/tdryer/hangups) API for Google Hangouts. It has been developed as a continuation of the [Beholder](https://github.com/jorgehortelano/beholder) project, that uses Whatsapp instead of Google Hangouts.
 
@@ -15,18 +15,18 @@ This software has been developed using a Raspberry Pi 2 Model B with a LM393 Sou
 
 ## Installation
 
-Install [hangups](https://github.com/tdryer/hangups) simply typing:
+Install first [hangups](https://github.com/tdryer/hangups) simply typing:
 ```
 pip3 install hangups.
 ```
-But I would recommend to install last version of hangups. Then:
+But I would recommend to install last version of hangups. Then download the code and install it:
 ```
 git clone https://github.com/tdryer/hangups.git
 cd hangups
 python3 setup.py
 ```
 
-After installing hangups API. Install this application running inside the application folder the next command:
+After installing hangups API. Install BlackGecko application typing inside the application folder the next command:
 ```
 python setup.py install
 ```
@@ -88,7 +88,6 @@ After obtaining the refresh token, the conversation id can be obtained if you ru
 ```
 blackgecko --conversations-info
 ```
-
 This will show a list with all conversations id available. Try one by one until you are connected to the correct conversation. 
 
 ### Testing the configuration
@@ -102,14 +101,13 @@ This command will send a 'Test message' text to the selected conversation.
 ## Execution
 
 To launch the application as a server execute:
-
-	blackgecko -c
-	
-
+```
+blackgecko -c
+```
 If everything is running correctly, now you can use a standard hangouts client (i.e. in your mobile phone) to communicate with the application. You can use the next messages as commands:
 
-	hello			will show the name (alias) of the device.
-	select <alias>	select the device to accept other commands.
+	hello			will show the name (alias) of any connected device.
+	select <alias>	select one device to accept other commands. Select all will select all devices
 	enable			start the sensor detection for the selected device.
 	disable			stops sending alerts from sensors.
 	help            shows these options.
