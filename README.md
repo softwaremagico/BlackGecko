@@ -107,7 +107,7 @@ blackgecko -c
 If everything is running correctly, now you can use a standard hangouts client (i.e. in your mobile phone) to communicate with the application. You can use the next messages as commands:
 
 	hello			will show the name (alias) of any connected device.
-	select <alias>	select one device to accept other commands. Select all will select all devices
+	select <alias>	select one device to accept other commands. 'Select all' will select all avaialble devices.
 	enable			start the sensor detection for the selected device.
 	disable			stops sending alerts from sensors.
 	help            shows these options.
