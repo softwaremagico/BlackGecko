@@ -6,12 +6,14 @@ from sensors.sensors import SensorsController
 from config import ConfigurationReader
 from .server import Server
 from sensors.face_detection import FaceDetection
+from sensors.buzzer import Buzzer
 
 
 class CommandServer(Server):
 	_node_enabled = []
 	_user_selection = []
 	_events_initialized = False
+	sensorsController = None
 	
 	
 	def __init__(self):
@@ -42,6 +44,9 @@ class CommandServer(Server):
 		elif "enable" ==  event.text.lower():
 			if (self.is_node_selected(user)) :
 				self._enable_node(user)
+		elif "alarm" == event.text.lower():
+			if (self.is_node_selected(user)) :
+				Buzzer()
 		# Execute command if possible.
 		elif event.text.lower() == "reboot":
 			if (self.is_node_selected(user)) :

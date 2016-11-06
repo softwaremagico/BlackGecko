@@ -10,6 +10,10 @@ class ConfigurationReader():
 	_alias = ""
 	_infrared_sensor_pin = 0
 	_sound_sensor_pin = 0
+	_buzzer_pin = 0
+	_led_red_pin = 0
+	_led_blue_pin = 0
+	_led_green_pin = 0
 	_log_file = ""
 	_cascade_file = ""
 
@@ -19,7 +23,7 @@ class ConfigurationReader():
 		if (os.path.isfile(config_file)):
 			#User folder configuration file.
 			self.read(config_file)
-		elif(os.path.isfile("/etc/blackgecko/"+ConfigurationReader._config_file)):
+		elif (os.path.isfile("/etc/blackgecko/"+ConfigurationReader._config_file)):
 			#System configuration file.
 			self.read("/etc/blackgecko/"+ConfigurationReader._config_file)
 		else:
@@ -43,6 +47,12 @@ class ConfigurationReader():
 		server_conf = config['sensors']
 		ConfigurationReader._infrared_sensor_pin = int(server_conf['infrared_pin'])
 		ConfigurationReader._sound_sensor_pin = int(server_conf['sound_pin'])
+
+		server_conf = config['output']
+		ConfigurationReader._buzzer_pin = int(server_conf['buzzer_pin'])
+		ConfigurationReader._led_red_pin = int(server_conf['led_red_pin'])
+		ConfigurationReader._led_blue_pin = int(server_conf['led_blue_pin'])
+		ConfigurationReader._led_green_pin = int(server_conf['led_green_pin'])
 		
 		server_conf = config['face_detection']
 		ConfigurationReader._frame_width = int(server_conf['frame_width'])
