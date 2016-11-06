@@ -8,6 +8,7 @@ from messaging.echo_server import EchoServer
 from extras.conversations_info import ConversationsInfo
 from messaging.command_server import CommandServer
 from config import ConfigurationReader
+import output.led as led
 
 _echo_server = False
 _test_alert = False
@@ -19,6 +20,8 @@ logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 
 def main():
 	"""Main entry point."""
+	led.startingNode()
+
 	try:
 		import hangups
 	except ImportError:

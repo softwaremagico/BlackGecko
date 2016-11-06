@@ -7,6 +7,7 @@ from config import ConfigurationReader
 from .server import Server
 from sensors.face_detection import FaceDetection
 from output.buzzer import Buzzer
+import output.led as led
 
 
 class CommandServer(Server):
@@ -87,6 +88,7 @@ class CommandServer(Server):
 		if user.id_ in self._node_enabled: 
 			self._node_enabled.remove(user.id_)
 			logging.info("Disabling node '" + self._alias +  "'")
+			led.disabledNode()
 			asyncio.async(self.send_message("Disabling node '" + self._alias + "'"))
 	
 			
@@ -94,6 +96,7 @@ class CommandServer(Server):
 		if user.id_ not in self._node_enabled:
 			self._node_enabled.append(user.id_)
 			logging.info("Enabling node '" + self._alias + "'.")
+			led.enabledNode()
 			SensorsController(self.send_message)
 
 		
