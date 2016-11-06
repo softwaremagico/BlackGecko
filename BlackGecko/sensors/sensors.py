@@ -6,14 +6,14 @@ from config import ConfigurationReader
 class SensorsController():
 	_events_initialized = False
 	_loop = None
+	_sensors_started = False
 
 	
 	def __init__(self, message_manager_f):
 		self._message_manager = message_manager_f
-		self.enable_sensors()
+		self.initialize_sensors()
 
-
-	def enable_sensors(self):
+	def initialize_sensors(self):
 		try:
 			import RPi.GPIO as gpio
 			if self._events_initialized == False :
@@ -29,33 +29,46 @@ class SensorsController():
 				logging.info("Sensors enabled!")
 				# run the event loop
 				self._loop = asyncio.get_event_loop()
-				self.sensor_started()
 		except ImportError:
 			logging.error("No GPIO library found! Sensors are not enabled!")
 			self.sensor_error(message_manager_f, "🚫 No GPIO library found! Sensors are not enabled! 🚫")
 
 
 	def on_gpio_motion_event(self, channel):
-		print('Motion detected')
 		self._loop.call_soon_threadsafe(self.gpio_motion_event_on_loop_thread)
 
 
 	def on_gpio_sound_event(self, channel):
-		print('Sound detected')
 		self._loop.call_soon_threadsafe(self.gpio_sound_event_on_loop_thread)
 
 
 	def gpio_motion_event_on_loop_thread(self):
-		asyncio.async(self._message_manager("🚨 Motion detected in '" + ConfigurationReader._alias + "'! 🚨 "))
+		if self._sensors_started :
+			logging.info("Motion detected!")
+			asyncio.async(self._message_manager("🚨 Motion detected in '" + ConfigurationReader._alias + "'! 🚨 "))
 
 
 	def gpio_sound_event_on_loop_thread(self):
-		asyncio.async(self._message_manager("🚨 Sound detected in '" + ConfigurationReader._alias + "'!  🚨 "))
+		if self._sensors_started :
+			logging.info("Sound detected!")
+			asyncio.async(self._message_manager("🚨 Sound detected in '" + ConfigurationReader._alias + "'!  🚨 "))
 	
 	
 	def sensor_started(self):
-		asyncio.async(self._message_manager("Enabling node '" + ConfigurationReader._alias + "' 🏁"))
+		asyncio.async(self._message_manager("Sensors in '" + ConfigurationReader._alias + "' enabled  🏁"))
 
+	def sensors_disabled(self):
+		asyncio.async(self._message_manager("Sensors in '" + ConfigurationReader._alias + "' disabled 🚫"))
 		
 	def sensor_error(self, message):
 		asyncio.async(self._message_manager(message))
+
+	def enable_sensors(self):
+		if self._events_initialized == False :
+			self.initialize_sensors()			
+		self.sensor_started()
+		self._sensors_started = True
+
+	def disable_sensors(self):
+		self._sensors_started = False
+		self.sensors_disabled()

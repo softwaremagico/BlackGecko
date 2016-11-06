@@ -14,11 +14,12 @@ class CommandServer(Server):
 	_node_enabled = []
 	_user_selection = []
 	_events_initialized = False
-	sensorsController = None
+	_sensorsController = None
 	
 	
 	def __init__(self):
 		self._alias = ConfigurationReader._alias
+		self._sensorsController = SensorsController(self.send_message)
 		self._connect()
 						
 	
@@ -90,6 +91,7 @@ class CommandServer(Server):
 			logging.info("Disabling node '" + self._alias +  "'")
 			led.disabledNode()
 			asyncio.async(self.send_message("Disabling node '" + self._alias + "'"))
+			self._sensorsController.disable_sensors()
 	
 			
 	def _enable_node(self, user):
@@ -97,7 +99,7 @@ class CommandServer(Server):
 			self._node_enabled.append(user.id_)
 			logging.info("Enabling node '" + self._alias + "'.")
 			led.enabledNode()
-			SensorsController(self.send_message)
+			self._sensorsController.enable_sensors()
 
 		
 	def show_help(self):

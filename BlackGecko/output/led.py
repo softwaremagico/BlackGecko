@@ -56,6 +56,7 @@ def startingNode():
 def enabledNode():
 	setLedColor([0, 255, 0])
 
-
+def processingNode():
+	setLedColor([50, 255, 255])
 
 
