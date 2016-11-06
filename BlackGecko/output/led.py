@@ -50,7 +50,10 @@ def disabledNode():
 
 
 def startingNode():
-	setLedColor([225, 0, 0])
+	setLedColor([50, 255, 255])
+
+def startedNode():
+	setLedColor([255, 0, 0])
 
 
 def enabledNode():

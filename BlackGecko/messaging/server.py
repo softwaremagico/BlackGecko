@@ -6,6 +6,7 @@ import logging
 import hangups
 import messaging.authentication as authentication
 from config import ConfigurationReader
+import output.led as led
 
 
 epoch = datetime.datetime.utcfromtimestamp(0)
@@ -59,6 +60,7 @@ class Server():
 		logging.info("Server connected!")
 		yield from self._get_conversation()		
 		asyncio.async(self.send_message("Server '"+ self._alias+"' started."))
+		led.startedNode();
 
 	@asyncio.coroutine	
 	def _disconnected(self):

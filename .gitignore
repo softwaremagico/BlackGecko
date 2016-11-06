@@ -12,3 +12,4 @@ debian/blackgecko.debhelper.log
 debian/blackgecko.postinst.debhelper
 debian/blackgecko.prerm.debhelper
 debian/blackgecko.substvars
+*.swp
