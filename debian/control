@@ -2,6 +2,7 @@ Source: blackgecko
 Section: python
 Priority: optional
 Maintainer: Jorge Hortelano, <jorgehortelano@gmail.com>
+Standards-Version: 0.2.0
 Build-Depends: debhelper (>= 7), python3
 X-Python-Version: >= 3.3
 
@@ -12,4 +13,4 @@ Essential: no
 Replaces: blackgecko
 Provides: blackgecko
 Description: 
-	Python application for detecting intrussions. 
+	Python application for detecting intrusions. 
