@@ -6,7 +6,7 @@ from sensors.sensors import SensorsController
 from config import ConfigurationReader
 from .server import Server
 from sensors.face_detection import FaceDetection
-from sensors.buzzer import Buzzer
+from output.buzzer import Buzzer
 
 
 class CommandServer(Server):
