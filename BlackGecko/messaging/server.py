@@ -137,7 +137,11 @@ class Server():
 		logging.info("Sending Image...")
 		#Upload image and send message with url.
 		segments = hangups.ChatMessageSegment.from_str(text)
-		image = open(image_path, 'rb')
-		yield from  self._conversation.send_message(segments, image)
-		logging.info("Image sended!")
-		
+		try:
+			image = open(image_path, 'rb')
+			yield from  self._conversation.send_message(segments, image)
+			logging.info("Image sended!")
+		except FileNotFoundError:
+			logging.info("No image to send.")
+	
+

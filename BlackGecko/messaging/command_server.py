@@ -132,5 +132,8 @@ class CommandServer(Server):
 		face_detect =  FaceDetection(ConfigurationReader._cascade_file)
 		face_detect.detect("/tmp/detection.jpg", 5)
 		logging.info("Image created")
-		asyncio.async(self.send_image("Image test from '" + self._alias +"'", "/tmp/detection.jpg"))
+		asyncio.async(self.send_image("Image obtained from '" + self._alias +"'", "/tmp/detection.jpg"))
+
+	def sensors_callback(self):
+		logging.info("Sensors callback")
 		
