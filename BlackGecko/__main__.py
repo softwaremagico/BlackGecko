@@ -46,7 +46,7 @@ def main():
 	logging.info("BlackGecko closing....")
 	
 def handle_arguments():
-	parser = argparse.ArgumentParser(description='An alarm system based on Hangouts.', epilog="Copyright© 2016 Jorge Hortelano")
+	parser = argparse.ArgumentParser(description='An alarm system based on Hangouts and OpenCV.', epilog="Copyright© 2016 Jorge Hortelano")
 	
 	parser.add_argument('-f', '--configuration-file', help='Selects a specific configuration file.')
 	

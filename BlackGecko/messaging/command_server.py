@@ -50,11 +50,11 @@ class CommandServer(Server):
 			if (self.is_node_selected(user)) :
 				Buzzer()
 		# Execute command if possible.
-		elif event.text.lower() == "reboot":
+		elif "reboot" == event.text.lower() :
 			if (self.is_node_selected(user)) :
 				command = ['sudo', 'reboot']
 				self.execute_command(command)
-		elif event.text.lower() == "image":
+		elif "image" == event.text.lower() :
 			if (self.is_node_selected(user)) :
 				self.send_face_image()
 		else:
@@ -127,8 +127,10 @@ class CommandServer(Server):
 		
 		
 	def send_face_image(self):
-		#asyncio.async(self.send_message("Creating image"))
+		logging.info("Creating image")
+		asyncio.async(self.send_message("Creating image"))
 		face_detect =  FaceDetection(ConfigurationReader._cascade_file)
-		face_detect._detect("/tmp/detection.jpg", 5)
+		face_detect.detect("/tmp/detection.jpg", 5)
+		logging.info("Image created")
 		asyncio.async(self.send_image("Image test from '" + self._alias +"'", "/tmp/detection.jpg"))
 		

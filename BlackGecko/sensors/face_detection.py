@@ -1,3 +1,7 @@
+from picamera.array import PiRGBArray
+from picamera import PiCamera
+import picamera
+import numpy
 import cv2
 import sys
 import logging
@@ -11,22 +15,36 @@ class FaceDetection():
 	def __init__(self, cascade_file):
 		self._cascade_file = cascade_file
 		self.faceCascade = cv2.CascadeClassifier(cascade_file)
-		self.video_capture = cv2.VideoCapture(0)
-		self.video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, ConfigurationReader._frame_width)
-		self.video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, ConfigurationReader._frame_heigh)
-		self.video_capture.set(cv2.CAP_PROP_FPS, 5)
+		#self.video_capture = cv2.VideoCapture(0)
+		#self.video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, ConfigurationReader._frame_width)
+		#self.video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, ConfigurationReader._frame_heigh)
+		#self.video_capture.set(cv2.CAP_PROP_FPS, 5)
+
+		# Initialize the picam
+		self.camera = PiCamera()
+		self.camera.resolution = (ConfigurationReader._frame_width, ConfigurationReader._frame_heigh)
+		self.camera.framerate = 5
+		self.rawCapture = PiRGBArray(self.camera, size=(ConfigurationReader._frame_width, ConfigurationReader._frame_heigh))
+
+		# Allow the camera to warmup
+		self.camera.start_preview()
+		time.sleep(0.1)
+
 		
 
-	def _detect(self, output_file, time_of_capture):
+	def detect(self, output_file, time_of_capture):
 		print("Detecting.....")
 		time_duration = time.time() + time_of_capture
 		best_face_size = 0
 		
 		while (time.time() < time_duration):
 			# Capture frame-by-frame
-			ret, frame = self.video_capture.read()
+			with picamera.array.PiRGBArray(self.camera) as stream:
+				self.camera.capture(stream, format='bgr')
+				frame = stream.array
 
 			gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+			cv2.imwrite(output_file, frame)
 
 			faces = self.faceCascade.detectMultiScale(
 				gray,
@@ -51,7 +69,8 @@ class FaceDetection():
 			#	break
 
 		# When everything is done, release the capture
-		self.video_capture.release()
+		self.camera.close()
+		#self.video_capture.release()
 		cv2.destroyAllWindows()
 
 
