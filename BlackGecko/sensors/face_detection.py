@@ -67,7 +67,7 @@ class FaceDetection():
 				#Write biggest face.
 				if (w*h > best_face_size):
 					best_face_size = w*h
-					cv2.imwrite(output_file, frame)
+					cv2.imwrite(output_file, frame[:, :, ::-1])
 					
 			
 			# Display the resulting frame
