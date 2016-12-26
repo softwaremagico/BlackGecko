@@ -19,7 +19,7 @@ class CommandServer(Server):
 	
 	def __init__(self):
 		self._alias = ConfigurationReader._alias
-		self._sensorsController = SensorsController(self.send_message)
+		self._sensorsController = SensorsController(self.send_message, self.sensors_callback)
 		self._connect()
 						
 	
@@ -135,5 +135,6 @@ class CommandServer(Server):
 		asyncio.async(self.send_image("Image obtained from '" + self._alias +"'", "/tmp/detection.jpg"))
 
 	def sensors_callback(self):
+		#self.send_face_image()
 		logging.info("Sensors callback")
 		

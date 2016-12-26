@@ -9,9 +9,10 @@ class SensorsController():
 	_sensors_started = False
 
 	
-	def __init__(self, message_manager_f):
+	def __init__(self, message_manager_f, detection_callback):
 		self._message_manager = message_manager_f
 		self.initialize_sensors()
+		self._detection_callback = detection_callback
 
 	def initialize_sensors(self):
 		try:
@@ -46,6 +47,7 @@ class SensorsController():
 		if self._sensors_started :
 			logging.info("Motion detected!")
 			asyncio.async(self._message_manager("🚨 Motion detected in '" + ConfigurationReader._alias + "'! 🚨 "))
+			self._detection_callback()
 
 
 	def gpio_sound_event_on_loop_thread(self):
