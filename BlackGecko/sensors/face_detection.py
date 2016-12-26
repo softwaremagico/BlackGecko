@@ -10,6 +10,7 @@ import time
 
 from config import ConfigurationReader
 
+
 class FaceDetection():
 	
 	def __init__(self, cascade_file):
@@ -37,14 +38,20 @@ class FaceDetection():
 		time_duration = time.time() + time_of_capture
 		best_face_size = 0
 		
+		store_raw_image = True
 		while (time.time() < time_duration):
 			# Capture frame-by-frame
 			with picamera.array.PiRGBArray(self.camera) as stream:
 				self.camera.capture(stream, format='bgr')
 				frame = stream.array
 
+			#Send at least first image in RGB if no face has been detected
+			if(store_raw_image) :
+				#Convert BGR to RGB
+				cv2.imwrite(output_file, frame[:, :, ::-1])
+				store_raw_image = False
+
 			gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-			cv2.imwrite(output_file, frame)
 
 			faces = self.faceCascade.detectMultiScale(
 				gray,
