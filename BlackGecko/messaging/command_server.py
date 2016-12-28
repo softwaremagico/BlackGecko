@@ -14,12 +14,13 @@ class CommandServer(Server):
 	_node_enabled = []
 	_user_selection = []
 	_events_initialized = False
-	_sensorsController = None
+	_sensors_controller = None
+	_sensors_started = False
 	
 	
 	def __init__(self):
 		self._alias = ConfigurationReader._alias
-		self._sensorsController = SensorsController(self.send_message, self.sensors_callback)
+		self._sensors_controller = SensorsController(self.send_message, self.motion_sensor_callback, self.sound_sensor_callback)
 		self._connect()
 						
 	
@@ -91,7 +92,7 @@ class CommandServer(Server):
 			logging.info("Disabling node '" + self._alias +  "'")
 			led.disabledNode()
 			asyncio.async(self.send_message("Disabling node '" + self._alias + "'"))
-			self._sensorsController.disable_sensors()
+			self.disable_sensors()
 	
 			
 	def _enable_node(self, user):
@@ -99,7 +100,7 @@ class CommandServer(Server):
 			self._node_enabled.append(user.id_)
 			logging.info("Enabling node '" + self._alias + "'.")
 			led.enabledNode()
-			self._sensorsController.enable_sensors()
+			self.enable_sensors()
 
 		
 	def show_help(self):
@@ -134,7 +135,24 @@ class CommandServer(Server):
 		logging.info("Image created")
 		asyncio.async(self.send_image("Image obtained from '" + self._alias +"'", "/tmp/detection.jpg"))
 
-	def sensors_callback(self):
-		#self.send_face_image()
-		logging.info("Sensors callback")
+	def motion_sensor_callback(self) :
+		if self._sensors_started :
+			asyncio.async(self.send_message("🚨 Motion detected in '" + ConfigurationReader._alias + "'! 🚨 "))
+			#self.send_face_image()
+			logging.info("Sensors callback")
 		
+
+	def sound_sensor_callback(self) :
+		asyncio.async(self.send_message("🚨 Sound detected in '" + ConfigurationReader._alias + "'!  🚨 "))
+
+
+	def enable_sensors(self):
+		asyncio.async(self.send_message("Sensors in '" + ConfigurationReader._alias + "' enabled  🏁 "))
+		self._sensors_started = True
+
+
+	def disable_sensors(self):
+		self._sensors_started = False
+		asyncio.async(self.send_message("Sensors in '" + ConfigurationReader._alias + "' disabled 🚫 "))
+
+
