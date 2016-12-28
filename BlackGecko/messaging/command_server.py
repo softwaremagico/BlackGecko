@@ -90,7 +90,6 @@ class CommandServer(Server):
 		if user.id_ in self._node_enabled: 
 			self._node_enabled.remove(user.id_)
 			logging.info("Disabling node '" + self._alias +  "'")
-			led.disabledNode()
 			asyncio.async(self.send_message("Disabling node '" + self._alias + "'"))
 			self.disable_sensors()
 	
@@ -99,7 +98,6 @@ class CommandServer(Server):
 		if user.id_ not in self._node_enabled:
 			self._node_enabled.append(user.id_)
 			logging.info("Enabling node '" + self._alias + "'.")
-			led.enabledNode()
 			self.enable_sensors()
 
 		
@@ -141,17 +139,22 @@ class CommandServer(Server):
 			#self.send_face_image()
 			logging.info("Sensors callback")
 		
-
+	# Enable alarm only with a palm!
 	def sound_sensor_callback(self) :
-		asyncio.async(self.send_message("🚨 Sound detected in '" + ConfigurationReader._alias + "'!  🚨 "))
+		if not self._sensors_started:
+			self.enable_sensors()
+		else:
+			asyncio.async(self.send_message("🚨 Sound detected in '" + ConfigurationReader._alias + "'!  🚨 "))
 
 
 	def enable_sensors(self):
+		led.enabledNode()
 		asyncio.async(self.send_message("Sensors in '" + ConfigurationReader._alias + "' enabled  🏁 "))
 		self._sensors_started = True
 
 
 	def disable_sensors(self):
+		led.disabledNode()
 		self._sensors_started = False
 		asyncio.async(self.send_message("Sensors in '" + ConfigurationReader._alias + "' disabled 🚫 "))
 
