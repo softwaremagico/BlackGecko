@@ -87,15 +87,16 @@ class CommandServer(Server):
 	
 	
 	def _disable_node(self, user):
-		if user.id_ in self._node_enabled: 
-			self._node_enabled.remove(user.id_)
+		if self._sensors_started : 
+			if user.id_ in self._node_enabled :			
+				self._node_enabled.remove(user.id_)
 			logging.info("Disabling node '" + self._alias +  "'")
 			asyncio.async(self.send_message("Disabling node '" + self._alias + "'"))
 			self.disable_sensors()
 	
 			
 	def _enable_node(self, user):
-		if user.id_ not in self._node_enabled:
+		if not self._sensors_started :
 			self._node_enabled.append(user.id_)
 			logging.info("Enabling node '" + self._alias + "'.")
 			self.enable_sensors()
