@@ -26,7 +26,7 @@ class SensorsController():
 					gpio.add_event_detect(ConfigurationReader._infrared_sensor_pin, gpio.RISING, callback=self.on_gpio_motion_event, bouncetime=500)
 				if int(ConfigurationReader._sound_sensor_pin) > 0 :
 					gpio.setup(ConfigurationReader._sound_sensor_pin, gpio.IN)
-					gpio.add_event_detect(ConfigurationReader._sound_sensor_pin, gpio.RISING, callback=self.on_gpio_sound_event, bouncetime=500)
+					gpio.add_event_detect(ConfigurationReader._sound_sensor_pin, gpio.RISING, callback=self.on_gpio_sound_event, bouncetime=100)
 				logging.info("Sensors enabled!")
 				# run the event loop
 				self._loop = asyncio.get_event_loop()

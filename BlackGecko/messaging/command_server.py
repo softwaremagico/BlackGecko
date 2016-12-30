@@ -1,6 +1,7 @@
 import asyncio
 import subprocess
 import logging
+import time
 
 from sensors.sensors import SensorsController
 from config import ConfigurationReader
@@ -16,6 +17,7 @@ class CommandServer(Server):
 	_events_initialized = False
 	_sensors_controller = None
 	_sensors_started = False
+	_last_sound_time = time.time()
 	
 	
 	def __init__(self):
@@ -143,7 +145,11 @@ class CommandServer(Server):
 	# Enable alarm only with a palm!
 	def sound_sensor_callback(self) :
 		if not self._sensors_started:
-			self.enable_sensors()
+			_current_sound_time = time.time()
+			print(_current_sound_time, self._last_sound_time)
+			if _current_sound_time - self._last_sound_time < 3 : 
+				self.enable_sensors()
+			self._last_sound_time = _current_sound_time
 		else:
 			asyncio.async(self.send_message("🚨 Sound detected in '" + ConfigurationReader._alias + "'!  🚨 "))
 
