@@ -49,6 +49,8 @@ class FaceDetection():
 			with picamera.array.PiRGBArray(self.camera) as stream:
 				self.camera.capture(stream, format='bgr')
 				frame = stream.array
+				if ConfigurationReader._rotate_image is not 0 :
+					frame = self.rotate_image(frame)
 
 			#Send at least first image in RGB if no face has been detected
 			if(store_raw_image) :
@@ -84,6 +86,13 @@ class FaceDetection():
 		self.camera.close()
 		#self.video_capture.release()
 		cv2.destroyAllWindows()
+
+	def rotate_image(self, frame):
+		image_center = tuple(numpy.array(frame.shape[0:2])/2)
+		rotation_matrix = cv2.getRotationMatrix2D(image_center, ConfigurationReader._rotate_image, 1.0)
+		return cv2.warpAffine(frame, rotation_matrix, frame.shape[0:2],flags=cv2.INTER_LINEAR)
+				
+
 
 class BusyCamera(Exception):
 	def __init__(self, message):

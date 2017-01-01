@@ -16,6 +16,7 @@ class ConfigurationReader():
 	_led_green_pin = 0
 	_log_file = ""
 	_cascade_file = ""
+	_rotate_image = 0
 
 
 	def __init__(self):
@@ -58,6 +59,7 @@ class ConfigurationReader():
 		ConfigurationReader._frame_width = int(server_conf['frame_width'])
 		ConfigurationReader._frame_heigh = int(server_conf['frame_heigh'])
 		ConfigurationReader._cascade_file = server_conf['haarcascade_file']
+		ConfigurationReader._rotate_image = int(server_conf['rotate_image'])
 
 
 	def write_user_folder():
