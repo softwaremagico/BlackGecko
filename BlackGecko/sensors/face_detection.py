@@ -22,7 +22,12 @@ class FaceDetection():
 		#self.video_capture.set(cv2.CAP_PROP_FPS, 5)
 
 		# Initialize the picam
-		self.camera = PiCamera()
+		try:
+			self.camera = PiCamera()
+		except picamera.exc.PiCameraMMALError :
+			raise BusyCamera("Camera already in use!")	
+
+
 		self.camera.resolution = (ConfigurationReader._frame_width, ConfigurationReader._frame_heigh)
 		self.camera.framerate = 5
 		self.rawCapture = PiRGBArray(self.camera, size=(ConfigurationReader._frame_width, ConfigurationReader._frame_heigh))
@@ -79,6 +84,11 @@ class FaceDetection():
 		self.camera.close()
 		#self.video_capture.release()
 		cv2.destroyAllWindows()
+
+class BusyCamera(Exception):
+	def __init__(self, message):
+		# Call the base class constructor with the parameters it needs
+		super(BusyCamera, self).__init__(message)
 
 
 if __name__ == '__main__':

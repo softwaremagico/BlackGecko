@@ -7,6 +7,7 @@ from sensors.sensors import SensorsController
 from config import ConfigurationReader
 from .server import Server
 from sensors.face_detection import FaceDetection
+from sensors.face_detection import BusyCamera
 from output.buzzer import Buzzer
 import output.led as led
 
@@ -130,11 +131,15 @@ class CommandServer(Server):
 		
 	def send_face_image(self):
 		logging.info("Creating image")
-		asyncio.async(self.send_message("Creating image"))
-		face_detect =  FaceDetection(ConfigurationReader._cascade_file)
-		face_detect.detect("/tmp/detection.jpg", 5)
-		logging.info("Image created")
-		asyncio.async(self.send_image("Image obtained from '" + self._alias +"'", "/tmp/detection.jpg"))
+		#asyncio.async(self.send_message("Creating image"))
+		try:
+			face_detect =  FaceDetection(ConfigurationReader._cascade_file)
+			face_detect.detect("/tmp/detection.jpg", 5)
+			logging.info("Image created")
+			asyncio.async(self.send_image("Image obtained from '" + self._alias +"'", "/tmp/detection.jpg"))
+		except BusyCamera :
+			asyncio.async(self.send_message("Camera already in use by another application."))
+			
 
 	def motion_sensor_callback(self) :
 		if self._sensors_started :
