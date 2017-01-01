@@ -12,6 +12,7 @@ This software has been developed using a Raspberry Pi 2 Model B with a LM393 Sou
   2. GPIO library for sensors
   3. Hangups api for python
   4. cv2
+  5. picamera
 
 ## Installation
 
@@ -26,7 +27,12 @@ cd hangups
 python3 setup.py
 ```
 
-After installing hangups API. Install BlackGecko application typing inside the application folder the next command:
+After installing hangups API. Install also the picamera module:
+```
+pip3 install "picamera[array]"
+```
+
+Now install BlackGecko application typing inside the application folder the next command:
 ```
 python setup.py install
 ```
