@@ -52,7 +52,7 @@ class CommandServer(Server):
 				self._enable_node(user)
 		elif "alarm" == event.text.lower():
 			if (self.is_node_selected(user)) :
-				Buzzer()
+				Buzzer(self.send_message)
 		# Execute command if possible.
 		elif "reboot" == event.text.lower() :
 			if (self.is_node_selected(user)) :
