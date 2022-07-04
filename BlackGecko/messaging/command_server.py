@@ -106,7 +106,7 @@ class CommandServer(Server):
 
 		
 	def show_help(self):
-		asyncio.ensure_future(self.send_message("Available commands:\n\thello\n\tstatus\n\tselect [<alias> | all]\n\tenable\n\tdisable\n\timage"))
+		asyncio.ensure_future(self.send_message("Available commands:\n\thello\n\tstatus\n\tselect [<alias> | all]\n\tunselect\n\tenable\n\tdisable\n\timage\n\talarm\n\treboot"))
 	
 		
 	def send_status(self, user):
@@ -138,7 +138,7 @@ class CommandServer(Server):
 			logging.info("Image created")
 			asyncio.ensure_future(self.send_image("Image obtained from '" + self._alias +"'", "/tmp/detection.jpg"))
 		except BusyCamera :
-			asyncio.ensure_future(self.send_message("Camera already in use by another application."))
+			asyncio.ensure_future(self.send_message("⚠ Camera already in use by other application. ⚠"))
 			
 
 	def motion_sensor_callback(self) :
