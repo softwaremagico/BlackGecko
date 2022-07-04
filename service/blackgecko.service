@@ -1,0 +1,16 @@
+[Unit]
+Description = Blackgecko
+After = network.target
+
+[Service]
+Type = simple
+ExecStart = python3 /home/jorge/BlackGecko/BlackGecko -c
+User = jorge
+Group =
+Restart = on-failure
+SyslogIdentifier = blackgecko
+RestartSec = 5
+TimeoutStartSec = infinity
+
+[Install]
+WantedBy = multi-user.target # Make it accessible to other users

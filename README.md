@@ -185,3 +185,14 @@ For example, to run the first time, you will have some chat like this in your go
 ## Multiuser
 
 Each time a user want to access to the alerts system, must "subscribe" to the node with the `enable` command. He will automatically receive any alerts that will be launched from the system. Also, if later the user executes the `disable` command, he will stop receiving any alert. But this command does not affect any other subscribed user that still will be suscribed to the alert system. 
+
+# Creating a service
+If you are not using the default deb package, you need to create the service yourself. For creating a system daemon, in the `service` folder you have a template `blackgecko.servuce`. Update the `ExecStart` and `User` lines with the correct path to the downloaded sourcode of Blackgecko and the user that will run it. 
+
+Copy it to `/etc/systemd/system/blackgecko.service` and enable it by typing:
+
+```
+systemctl enable blackgecko
+systemctl daemon-reload
+systemctl start blackgecko
+```
