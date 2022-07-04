@@ -24,7 +24,7 @@ But I would recommend to install last version of hangups. Then download the code
 ```
 git clone https://github.com/tdryer/hangups.git
 cd hangups
-python3 setup.py
+python3 setup.py install
 ```
 
 After installing hangups API. Install also the picamera module:
@@ -44,8 +44,17 @@ After this, you can execute the package generator script as follows:
 sudo ./package.sh
 ```
 
-## Configuration
-The basic configuration file is in `/etc/blackgecko.conf`. This configuration file will be copied to the user local configuration the first time the application is launched. If you want to have different users with different configuration, then edit `/home/<user>/.config/RedOWl/blackgecko.conf`.
+### Executing from command line
+If you do not want -or you cannot- use the provided package, still you can run the application manually. On the root folder of the project, execute:
+
+```
+python BlackGecko
+``` 
+
+And generate the configuration file as described on the next section. 
+
+# Configuration
+The basic configuration file is in `/etc/blackgecko.conf` or `/etc/blackgecko/blackgecko.conf`. This configuration file will be copied to the user local configuration the first time the application is launched. If you want to have different users with different configuration, then edit `/home/<user>/.config/RedOWl/blackgecko.conf`.
 
 In both cases, the configuration file will have this fields:
 
@@ -74,11 +83,17 @@ It will show a link to ask for this refresh token. Perform all required tasks sh
 
 It it is working, you can see a file called `refresh_token.txt` created by hangups at `/home/<user>/.cache/hangups/`. Set the path to this file into the `blackgecko.conf` configuration file. 
 
-### ___Note___
+### Solving issues with hangups
+If you cannot login, you can try to do a manual login. For this purpose, execute the script on `hangups/hangups_manual_login.py`:
 
-___In some cases, google launches a 400 error (OAuth2 error). In this case, follow this instructions:___
+```
+python hangups_manual_login.py
+```
 
-1. ___Go to this url___ [url](https://accounts.google.com/o/oauth2/programmatic_auth?hl=en&scope=https%3A%2F%2Fwww.google.com%2Faccounts%2FOAuthLogin+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&client_id=936475272427.apps.googleusercontent.com&access_type=offline&delegated_client_id=183697946088-m3jnlsqshjhh5lbvg05k46q1k4qqtrgn.apps.googleusercontent.com&top_level_cookie=1)
+And open the link on the provided URL. This will give permission to the application to access to you google account with an oath2 token. 
+
+If you get a infinite "One moment please...":
+1. ___Click again on the URL provided by the script__
 2. ___Enter your username, click next.___
 3. ___Right click page background, inspect___
 4. ___Go to the network tab.___
@@ -86,7 +101,9 @@ ___In some cases, google launches a 400 error (OAuth2 error). In this case, foll
 6. ___Click the first row, the one that says "programmatic_auth"___
 7. ___Scroll down in the right-side panel, find "set-cookie"___
 8. ___Your code should be there, after "oauth_code=", up to but not including the semicolon.___
-9. ___Copy it and use it.___
+9. ___Copy it and use it on the input of the script.___
+
+And after this, you can run again `hangups`.
 
 ### Selecting the conversation
 
