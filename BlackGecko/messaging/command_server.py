@@ -33,7 +33,7 @@ class CommandServer(Server):
 			self.show_help()
 		#Node list
 		elif "hello" ==  event.text.lower(): 
-			asyncio.async(self.send_message("Hello from '" + self._alias+"'!"))
+			asyncio.ensure_future(self.send_message("Hello from '" + self._alias+"'!"))
 		#get status
 		elif "status" in event.text.lower():
 			self.send_status(user)
@@ -65,20 +65,20 @@ class CommandServer(Server):
 		# just print info
 			if (self.is_node_selected(user)) :
 				logging.warning("Invalid command '" + event.text +"' from '" + str(user.id_) +"'.")
-				asyncio.async(self.send_message("Invalid command '" + event.text + "'."))
+				asyncio.ensure_future(self.send_message("Invalid command '" + event.text + "'."))
 
 	
 	def _select_node(self, user):
 		logging.info("Selecting node '" + self._alias + "' for user '" + str(user.emails) + "'")
 		self._user_selection.append(user.id_)
-		asyncio.async(self.send_message("Selecting node '" + self._alias +"'"))
+		asyncio.ensure_future(self.send_message("Selecting node '" + self._alias +"'"))
 
 
 	def _unselect_node(self, user):
 		if (user.id_ in self._user_selection):
 			logging.info("Unselecting node '" + self._alias + "' for user '" + str(user.emails) + "'")
 			self._user_selection.remove(user.id_)
-			asyncio.async(self.send_message("Unselecting node '" + self._alias +"'"))
+			asyncio.ensure_future(self.send_message("Unselecting node '" + self._alias +"'"))
 	
 	
 	def is_node_selected(self, user):
@@ -94,7 +94,7 @@ class CommandServer(Server):
 			if user.id_ in self._node_enabled :			
 				self._node_enabled.remove(user.id_)
 			logging.info("Disabling node '" + self._alias +  "'")
-			asyncio.async(self.send_message("Disabling node '" + self._alias + "'"))
+			asyncio.ensure_future(self.send_message("Disabling node '" + self._alias + "'"))
 			self.disable_sensors()
 	
 			
@@ -106,7 +106,7 @@ class CommandServer(Server):
 
 		
 	def show_help(self):
-		asyncio.async(self.send_message("Available commands:\n\thello\n\tstatus\n\tselect [<alias> | all]\n\tenable\n\tdisable\n\timage"))
+		asyncio.ensure_future(self.send_message("Available commands:\n\thello\n\tstatus\n\tselect [<alias> | all]\n\tenable\n\tdisable\n\timage"))
 	
 		
 	def send_status(self, user):
@@ -118,7 +118,7 @@ class CommandServer(Server):
 			enabled = "enabled"
 		else:
 			enabled = "disabled"
-		asyncio.async(self.send_message("Node '" + self._alias + "'"+selected+": " + enabled))
+		asyncio.ensure_future(self.send_message("Node '" + self._alias + "'"+selected+": " + enabled))
 		
 	
 	#Executes a command if the user is in the allowed_user list. 
@@ -126,24 +126,24 @@ class CommandServer(Server):
 		status = subprocess.check_output(command)
 		self.send_message("Executing '" + str(command)+"'.")
 		logging.debug("Status: " + status)
-		asyncio.async(self.send_message(status))
+		asyncio.ensure_future(self.send_message(status))
 		
 		
 	def send_face_image(self):
 		logging.info("Creating image")
-		#asyncio.async(self.send_message("Creating image"))
+		#asyncio.ensure_future(self.send_message("Creating image"))
 		try:
 			face_detect =  FaceDetection(ConfigurationReader._cascade_file)
 			face_detect.detect("/tmp/detection.jpg", 5)
 			logging.info("Image created")
-			asyncio.async(self.send_image("Image obtained from '" + self._alias +"'", "/tmp/detection.jpg"))
+			asyncio.ensure_future(self.send_image("Image obtained from '" + self._alias +"'", "/tmp/detection.jpg"))
 		except BusyCamera :
-			asyncio.async(self.send_message("Camera already in use by another application."))
+			asyncio.ensure_future(self.send_message("Camera already in use by another application."))
 			
 
 	def motion_sensor_callback(self) :
 		if self._sensors_started :
-			asyncio.async(self.send_message("🚨 Motion detected in '" + ConfigurationReader._alias + "'! 🚨 "))
+			asyncio.ensure_future(self.send_message("🚨 Motion detected in '" + ConfigurationReader._alias + "'! 🚨 "))
 			#self.send_face_image()
 			logging.info("Sensors callback")
 		
@@ -156,18 +156,18 @@ class CommandServer(Server):
 				self.enable_sensors()
 			self._last_sound_time = _current_sound_time
 		else:
-			asyncio.async(self.send_message("🚨 Sound detected in '" + ConfigurationReader._alias + "'!  🚨 "))
+			asyncio.ensure_future(self.send_message("🚨 Sound detected in '" + ConfigurationReader._alias + "'!  🚨 "))
 
 
 	def enable_sensors(self):
 		led.enabledNode()
-		asyncio.async(self.send_message("Sensors in '" + ConfigurationReader._alias + "' enabled  🏁 "))
+		asyncio.ensure_future(self.send_message("Sensors in '" + ConfigurationReader._alias + "' enabled  🏁 "))
 		self._sensors_started = True
 
 
 	def disable_sensors(self):
 		led.disabledNode()
 		self._sensors_started = False
-		asyncio.async(self.send_message("Sensors in '" + ConfigurationReader._alias + "' disabled 🚫 "))
+		asyncio.ensure_future(self.send_message("Sensors in '" + ConfigurationReader._alias + "' disabled 🚫 "))
 
 

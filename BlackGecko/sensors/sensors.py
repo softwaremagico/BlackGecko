@@ -53,5 +53,5 @@ class SensorsController():
 		self._sound_detection_callback()	
 	
 	def sensor_error(self, message):
-		asyncio.async(self._message_manager(message))
+		asyncio.ensure_future(self._message_manager(message))
 

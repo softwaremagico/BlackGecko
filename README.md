@@ -69,6 +69,18 @@ In both cases, the configuration file will have this fields:
 	[sensors]
 	infrared_pin = 0
 	sound_pin = 0
+	
+	[output]
+	buzzer_pin = 0
+	led_red_pin = 0
+	led_blue_pin = 0
+	led_green_pin = 0
+	
+	[face_detection]
+	frame_width = 0
+	frame_heigh = 0
+	haarcascade_file = ''
+	rotate_image = ''
 
 The most important fields are the one in `[authenticaion]`: `refresh_token` and `conversation_id`.
 

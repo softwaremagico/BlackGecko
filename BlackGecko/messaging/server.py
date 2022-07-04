@@ -36,9 +36,9 @@ class Server():
 		self._client = hangups.Client(cookies)
 		
 		# Add an observer to the on_connect event to run the send_message  when hangups has finished connecting.
-		self._client.on_connect.add_observer(lambda: asyncio.async(self._connected()))
-		self._client.on_disconnect.add_observer(lambda: asyncio.async(self._disconnected()))
-		self._client.on_state_update.add_observer(lambda _: asyncio.async(self._state_updated()))
+		self._client.on_connect.add_observer(lambda: asyncio.ensure_future(self._connected()))
+		self._client.on_disconnect.add_observer(lambda: asyncio.ensure_future(self._disconnected()))
+		self._client.on_state_update.add_observer(lambda _: asyncio.ensure_future(self._state_updated()))
 		
 		# Start an asyncio event loop by running Client.connect. This will not return until Client.disconnect is called, or hangups becomes disconnected.
 		try:
@@ -51,7 +51,7 @@ class Server():
 	
 		
 	def _disconnect(self):
-		asyncio.async(self.send_message("Server '"+ self._alias+"' stopped."))
+		asyncio.ensure_future(self.send_message("Server '"+ self._alias+"' stopped."))
 		yield from self._client.disconnect()
 
 
@@ -59,7 +59,7 @@ class Server():
 	def _connected(self):
 		logging.info("Server connected!")
 		yield from self._get_conversation()		
-		asyncio.async(self.send_message("Server '"+ self._alias+"' started."))
+		asyncio.ensure_future(self.send_message("Server '"+ self._alias+"' started."))
 		led.startedNode();
 
 	@asyncio.coroutine	

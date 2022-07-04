@@ -23,8 +23,8 @@ class ConversationsInfo():
 		self._client = hangups.Client(cookies)
 		
 		# Add an observer to the on_connect event to run the send_message  when hangups has finished connecting.
-		self._client.on_connect.add_observer(lambda: asyncio.async(self._connected()))
-		self._client.on_disconnect.add_observer(lambda: asyncio.async(self._disconnected()))
+		self._client.on_connect.add_observer(lambda: asyncio.ensure_future(self._connected()))
+		self._client.on_disconnect.add_observer(lambda: asyncio.ensure_future(self._disconnected()))
 		
 		# Start an asyncio event loop by running Client.connect. This will not return until Client.disconnect is called, or hangups becomes disconnected.
 		loop = asyncio.get_event_loop()
@@ -58,4 +58,4 @@ class ConversationsInfo():
 			print("\tConversation found:", conversation.id_)
 		
 		#Disconnect
-		asyncio.async(self._disconnect())
+		asyncio.ensure_future(self._disconnect())

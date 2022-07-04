@@ -20,7 +20,7 @@ def send_alert(message):
 	client = hangups.Client(cookies)
 
 	# Add an observer to the on_connect event to run the send_message  when hangups has finished connecting.
-	client.on_connect.add_observer(lambda: asyncio.async(send_message(client, message)))
+	client.on_connect.add_observer(lambda: asyncio.ensure_future(send_message(client, message)))
 
 	# Start an asyncio event loop by running Client.connect. This will not
 	# return until Client.disconnect is called, or hangups becomes

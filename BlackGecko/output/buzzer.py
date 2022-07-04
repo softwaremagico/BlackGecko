@@ -8,7 +8,7 @@ class Buzzer():
 
 	def __init__(self):
 		if int(ConfigurationReader._buzzer_pin) > 0 :
-			asyncio.async(self.alarm())
+			asyncio.ensure_future(self.alarm())
 
 
 	@asyncio.coroutine
