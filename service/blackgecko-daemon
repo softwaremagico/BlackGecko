@@ -17,7 +17,8 @@
 # CONFIGURATION
 ######################################
 
-EXEC=/usr/bin/blackgecko
+#EXEC=/usr/bin/blackgecko
+EXEC=python3 /home/jorge/BlackGecko/BlackGecko -c
 CONFIG_FILE=/etc/blackgecko/blackgecko.conf
 PID_FOLDER=/var/run/blackgecko
 PID_FILE=blackgecko.pid
@@ -29,7 +30,7 @@ WAIT_BEFORE_KILL=30
 
 start()
 {
-	log_daemon_msg "Starting BlackGecko sendor alert system..."
+	log_daemon_msg "Starting BlackGecko sender alert system..."
 	log_daemon_msg "--------------------------------------------"
 	mkdir -p ${PID_FOLDER} 2>/dev/null
 	${EXEC} -c -f ${CONFIG_FILE}
@@ -38,7 +39,7 @@ start()
 
 stop()
 {
-	log_daemon_msg "Stopping BlackGecko sendor alert system..."
+	log_daemon_msg "Stopping BlackGecko sender alert system..."
 	log_daemon_msg "--------------------------------------------"
 	forceStop;
 	log_daemon_msg ""
