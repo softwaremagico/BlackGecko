@@ -49,7 +49,7 @@ class FaceDetection():
 			with picamera.array.PiRGBArray(self.camera) as stream:
 				self.camera.capture(stream, format='bgr')
 				frame = stream.array
-				if ConfigurationReader._rotate_image is not 0 :
+				if ConfigurationReader._rotate_image != 0 :
 					frame = self.rotate_image(frame)
 
 			#Send at least first image in RGB if no face has been detected

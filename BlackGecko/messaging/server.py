@@ -71,7 +71,9 @@ class Server():
 	def _state_updated(self):
 		"""Launched each time the user do anything in the conversation, such us pressing a key, entering into the conversation, etc."""
 		yield from self._get_text_message()
-		
+
+
+	@asyncio.coroutine
 	def _get_conversation(self):
 		logging.debug("Retrieving conversation...")
 		#Get users and conversations
@@ -91,8 +93,9 @@ class Server():
 		"""Only launched if the conversation is opened in the other client side when the server is already running"""
 		logging.debug("Event on conversation!")
 		#yield from self._get_text_message()
-		
-			
+
+
+	@asyncio.coroutine
 	def _get_text_message(self):
 		if (self.connected):
 			try:

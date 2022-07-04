@@ -32,7 +32,15 @@ After installing hangups API. Install also the picamera module:
 pip3 install "picamera[array]"
 ```
 
-Now install BlackGecko application typing inside the application folder the next command:
+Install also cv2. For this, 
+```
+pip3 install opencv-python
+pip3 install numpy -I
+```
+
+Next, install `apt install libatlas-base-dev`. You can check if the installation is correct, just typing `python3 -c "import cv2"`. 
+
+Now install BlackGecko application typing inside the application folder using the next command:
 ```
 python setup.py install
 ```
@@ -51,7 +59,7 @@ If you do not want -or you cannot- use the provided package, still you can run t
 python BlackGecko
 ``` 
 
-And generate the configuration file as described on the next section. 
+Now, generate the configuration file as described on the next section. 
 
 # Configuration
 The basic configuration file is in `/etc/blackgecko.conf` or `/etc/blackgecko/blackgecko.conf`. This configuration file will be copied to the user local configuration the first time the application is launched. If you want to have different users with different configuration, then edit `/home/<user>/.config/RedOWl/blackgecko.conf`.
@@ -93,29 +101,29 @@ hangups
 
 It will show a link to ask for this refresh token. Perform all required tasks showed in the console. Execute it again to check that now hangups runs correctly and you can see the command-line client for hangouts. If it is not working, see the hangups [documentation](https://github.com/tdryer/hangups).
 
-It it is working, you can see a file called `refresh_token.txt` created by hangups at `/home/<user>/.cache/hangups/`. Set the path to this file into the `blackgecko.conf` configuration file. 
+If it is working, you can see a file called `refresh_token.txt` created by hangups at `/home/<user>/.cache/hangups/`. Set the path to this file into the `blackgecko.conf` configuration file. 
 
 ### Solving issues with hangups
-If you cannot login, you can try to do a manual login. For this purpose, execute the script on `hangups/hangups_manual_login.py`:
+If you cannot log in, you can try to do a manual login. For this purpose, execute the script on `hangups/hangups_manual_login.py`:
 
 ```
 python hangups_manual_login.py
 ```
 
-And open the link on the provided URL. This will give permission to the application to access to you google account with an oath2 token. 
+Now open the link on the provided URL. This will give permission to the application to access to you google account with an oath2 token. 
 
 If you get a infinite "One moment please...":
-1. ___Click again on the URL provided by the script__
-2. ___Enter your username, click next.___
-3. ___Right click page background, inspect___
-4. ___Go to the network tab.___
-5. ___Enter your password, click sign in___
-6. ___Click the first row, the one that says "programmatic_auth"___
-7. ___Scroll down in the right-side panel, find "set-cookie"___
-8. ___Your code should be there, after "oauth_code=", up to but not including the semicolon.___
-9. ___Copy it and use it on the input of the script.___
+1. Click again on the URL provided by the script
+2. Enter your username, click next.
+3. Right click page background, inspect
+4. Go to the network tab.
+5. Enter your password, click sign in
+6. Click the first row, the one that says "programmatic_auth"
+7. Scroll down in the right-side panel, find "set-cookie"
+8. Your code should be there, after "oauth_code=", up to but not including the semicolon.
+9. Copy it and use it on the input of the script.
 
-And after this, you can run again `hangups`.
+After this, you can run again `hangups`.
 
 ### Selecting the conversation
 
@@ -123,7 +131,7 @@ After obtaining the refresh token, the conversation id can be obtained if you ru
 ```
 blackgecko --conversations-info
 ```
-This will show a list with all conversations id available. Try one by one until you are connected to the correct conversation. 
+This will show a list with all conversations' id available. Try one by one until you are connected to the correct conversation. 
 
 ### Testing the configuration
 
@@ -131,6 +139,12 @@ For testing it, you can use:
 ```
 blackgecko --test-alert
 ```
+or inside the project folder run:
+
+```
+python3 BlackGecko --test-alert
+```
+
 This command will send a 'Test message' text to the selected conversation. 
 
 ## Execution
@@ -139,6 +153,12 @@ To launch the application as a server execute:
 ```
 blackgecko -c
 ```
+or inside the project folder run:
+
+```
+python3 BlackGecko -c
+```
+
 If everything is running correctly, now you can use a standard hangouts client (i.e. in your mobile phone) to communicate with the application. You can use the next messages as commands:
 
 	hello			will show the name (alias) of any connected device.
@@ -147,7 +167,20 @@ If everything is running correctly, now you can use a standard hangouts client (
 	disable			stops sending alerts from sensors.
 	help            shows these options.
 
-For using this application at least you need to select the node first, and then start the detection. 
+For using this application at least you need to select the node first, and then start the detection.
+
+### Example of execution
+
+For example, to run the first time, you will have some chat like this in your google chat:
+
+    <user> hello
+    <blackgecko> Hello from 'blackgecko'!
+    <user> select all
+    <blackgecko> Selecting node 'blackgecko'
+    <user> enable
+    <blackgecko> Sensors in 'blackgecko' enabled  🏁
+    ...
+
 
 ## Multiuser
 

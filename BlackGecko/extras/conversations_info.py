@@ -44,8 +44,9 @@ class ConversationsInfo():
 	@asyncio.coroutine	
 	def _disconnected(self):
 		print("Disconnected!")
-	
-		
+
+
+	@asyncio.coroutine
 	def _get_conversations(self):
 		print("Retrieving conversations:")
 		#Get users and conversations
