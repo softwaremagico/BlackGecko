@@ -45,6 +45,13 @@ git clone https://github.com/tdryer/hangups.git
 cd hangups
 python3 setup.py install
 ```
+If it fails, maybe you need to install some python dependencies:
+
+```
+pip3 install multidict typing_extensions attr yarl
+```
+
+And run the `install` command again. 
 
 After installing hangups API. Install also the picamera module:
 
