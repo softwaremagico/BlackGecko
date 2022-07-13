@@ -72,10 +72,10 @@ typing `python3 -c "import cv2"`.
 Now install BlackGecko application typing inside the application folder using the next command:
 
 ```
-python setup.py install
+python3 setup.py install
 ```
 
-### Installing using a debian package
+### Creating a debian package
 
 The application has a script for generating a debian package. If you prefer to install on this way, please, install
 first `debuild`, `devscripts` and `debhelper`. This package can be installed using `apt-get install <package>`.
