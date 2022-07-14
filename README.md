@@ -35,7 +35,7 @@ Pyroelectric Infrared PIR Motion Sensor Detector Module HC-SR501. The operating 
 Install first [hangups](https://github.com/tdryer/hangups) simply typing:
 
 ```
-pip3 install hangups.
+pip3 install hangups
 ```
 
 But I would recommend to install last version of hangups. Then download the code and install it:
