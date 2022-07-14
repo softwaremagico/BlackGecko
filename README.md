@@ -67,7 +67,7 @@ pip3 install numpy -I
 ```
 
 Next, install `apt install libatlas-base-dev`. You can check if the installation is correct, just
-typing `python3 -c "import cv2"`.
+typing `python3 -c "import cv2"`. If no error is shown, then everything is installed correctly. 
 
 Now install BlackGecko application typing inside the application folder using the next command:
 
